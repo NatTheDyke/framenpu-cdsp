@@ -1,5 +1,5 @@
 """The layout half of a Mercury request: the host's FP16 tensors -> the kernel's staged grid words
-in the shared window, and the device's grids -> FP32 maps (docs/CONTRACTS.md, plugin ABI).
+in the shared window, and the device's grids -> FP32 maps (framenpu docs/CONTRACTS.md).
 
 framenpu (the model half) never sees the kernel's layout. A compiled plan tells it, through its
 ``Split``, which graph tensors the host stages and which come back; framenpu writes FP16 values

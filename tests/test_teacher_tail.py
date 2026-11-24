@@ -21,8 +21,8 @@ class TeacherTailTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-        from framenpu.convolution import load_landmark_graph
-        from framenpu.landmark import specifications
+        from framenpu_cdsp.research.convolution import load_landmark_graph
+        from framenpu_cdsp.research.landmark import specifications
 
         cls.graph = load_landmark_graph(MODEL / "hand.ncnn.param", MODEL / "hand.ncnn.bin")
         cls.specs = specifications(cls.graph)
@@ -143,7 +143,7 @@ class BuildTests(unittest.TestCase):
     def test_kernels_build_within_4_kib(self):
         try:
             sys.path.insert(0, str(ROOT / "src"))
-            from framenpu.compiler import Toolchain
+            from framenpu_cdsp.compiler import Toolchain
 
             Toolchain.discover()
         except Exception as exc:  # pragma: no cover

@@ -17,7 +17,7 @@ commands, fault checks and normal-SDK regressions.
 
 ## Storage and execution
 
-[ResidentGemm](../src/framenpu/resident_gemm.py) acquires an exclusive Linux
+[ResidentGemm](../src/framenpu_cdsp/research/resident_gemm.py) acquires an exclusive Linux
 abstract socket lease before opening its direct-dispatch Device. Its 32 KiB
 reservation is reproduced by the offline planner:
 
@@ -181,8 +181,8 @@ the evidence. The experimental Python interface accepts a qualified image and
 an ordinary K×32 weight matrix:
 
 ~~~python
-from framenpu import Job
-from framenpu.resident_gemm import ResidentGemm
+from framenpu_cdsp import Job
+from framenpu_cdsp.research.resident_gemm import ResidentGemm
 
 with ResidentGemm(Job.load("build/resident.fjob"), weights) as gemm:
     for inputs in input_stream:  # each input is 32×K

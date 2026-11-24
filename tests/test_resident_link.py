@@ -12,10 +12,10 @@ from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-from framenpu import Device, DeviceBusy, Job, RecoveryRequired
-from framenpu.errors import InvalidModel
-from framenpu.profile import PROFILE
-import framenpu.resident_landmark as rg
+from framenpu_cdsp import Device, DeviceBusy, Job, RecoveryRequired
+from framenpu_cdsp.errors import InvalidModel
+from framenpu_cdsp.profile import PROFILE
+import framenpu_cdsp.research.resident_landmark as rg
 from test_library import FakePower
 from test_resident_landmark_lifecycle import AdminTransport
 
@@ -469,8 +469,8 @@ class HeldPowerTests(unittest.TestCase):
 )
 class LinkedBuildTests(unittest.TestCase):
     def test_linked_build_verifies_and_leaves_cache_modules_unchanged(self):
-        from framenpu.compiler import Toolchain
-        from framenpu.errors import CompilerError
+        from framenpu_cdsp.compiler import Toolchain
+        from framenpu_cdsp.errors import CompilerError
 
         try:
             Toolchain.discover()

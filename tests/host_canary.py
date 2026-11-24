@@ -18,7 +18,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.transport import Transport
+from framenpu_cdsp.transport import Transport
 from tests_canary_pattern import pattern_bytes  # noqa: E402
 
 SAFE_FLOOR = 0x1A22000

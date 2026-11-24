@@ -8,7 +8,7 @@ The opt-in `tiles_per_job=2` argument to `Device.matmul` combines up to two
 depth-32 HMX products for one output tile. It requires direct dispatch:
 
 ~~~python
-from framenpu import Device
+from framenpu_cdsp import Device
 
 with Device(dispatch="direct") as npu:
     product = npu.matmul([[1.0] * 64], [[1.0] for _ in range(64)], tiles_per_job=2)

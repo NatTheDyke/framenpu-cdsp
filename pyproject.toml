@@ -3,11 +3,12 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "framenpu"
-version = "0.3.0"
-description = "Experimental Steam Frame Hexagon custom jobs and HMX inference"
+name = "framenpu-cdsp"
+version = "0.1.0"
+description = "Steam Frame CDSP device backend for framenpu: Hexagon jobs and HMX inference"
 readme = "README.md"
 requires-python = ">=3.11"
+dependencies = ["framenpu>=0.4,<0.5"]
 license = "MIT"
 license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
 authors = [{name = "FrameNPU contributors"}]
@@ -23,12 +24,12 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = ["build>=1.2", "ruff>=0.14", "twine>=6.1", "setuptools>=77"]
-cpu = ["onnxruntime"]  # framenpu.backends.CPUBackend
+cpu = ["onnxruntime"]  # the simulated device path (tests/test_sim_plugin.py)
 
 [project.scripts]
-framenpu = "framenpu.cli:main"
+framenpu-cdsp = "framenpu_cdsp.cli:main"
 
-# device backends framenpu.devices.load() finds (docs/CONTRACTS.md, plugin ABI)
+# framenpu.devices.load("cdsp") finds this plugin (framenpu docs/CONTRACTS.md, plugin ABI)
 [project.entry-points."framenpu.devices"]
 cdsp = "framenpu_cdsp.plugin:CDSPPlugin"
 
@@ -37,11 +38,10 @@ include-package-data = false
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["framenpu", "framenpu_cdsp"]
+include = ["framenpu_cdsp", "framenpu_cdsp.research"]
 namespaces = false
 
 [tool.setuptools.package-data]
-framenpu = ["data/*.json", "data/*.so", "host/*.c", "host/*.h", "manifests/*.json"]
 framenpu_cdsp = [
     "data/*.bin", "data/*.json", "data/*.so", "data/mercury/*", "host/*.c", "host/*.h",
     "sdk/*.S", "sdk/*.c", "sdk/*.ld", "sdk/include/*.h",

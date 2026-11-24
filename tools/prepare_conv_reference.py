@@ -13,7 +13,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.convolution import load_landmark_graph
+from framenpu_cdsp.research.convolution import load_landmark_graph
 
 MODEL_REV = "03d7695fecb80f6cf8f3aa9321de130b5efd08b3"
 PARAM_SHA = "54e08f284ff6f121ff00f4a9c65afc38c0dbb22a32f4af44fc4e0fde6c4a1bbd"

@@ -446,7 +446,7 @@ class MercuryLayoutTest(unittest.TestCase):
         packed biases, wide window) of four crops, with the detector after it, fits the
         window; every crop's replayed rows pass the native checks and the request words
         carry four crops. Without max_crops=4 a fourth crop is refused."""
-        from framenpu import _mercury_common as C, _mercury_layout as L
+        from framenpu_cdsp import _mercury_common as C, _mercury_layout as L
 
         kw = dict(
             replay=True,

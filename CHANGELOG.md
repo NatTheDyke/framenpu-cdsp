@@ -1,5 +1,16 @@
 # Changelog
 
+## framenpu-cdsp 0.1.0
+
+- framenpu's CDSP device backend as its own package, split out of framenpu 0.3.0 with its history.
+  It depends on `framenpu>=0.4,<0.5` and registers the `cdsp` plugin (ABI 1). The bundled DSP
+  payloads are unchanged (Mercury image 1bcbbdd8, which rebuilds byte-identical from this tree).
+- The early job and matrix API and the CLI moved here: `framenpu_cdsp.Device`, `Job`, `Model`,
+  ..., and the `framenpu-cdsp` command (`info`, `build-job`, `inspect-model`, `run-model`,
+  `plan-resident`, `inspect-ncnn`). The experiments are `framenpu_cdsp.research.*`.
+
+Earlier entries are framenpu's, from when both were one package.
+
 ## 0.3.0
 
 - The device backend is now a plugin: `framenpu_cdsp` registers `CDSPPlugin` under the
@@ -68,7 +79,7 @@
   unpack; `framenpu_cdsp._layout_native`), so the device backend no longer
   imports `framenpu`.
 
-- The library split has started: [CONTRACTS.md](docs/CONTRACTS.md) specifies
+- The library split has started: [CONTRACTS.md](https://github.com/NatTheDyke/framenpu/blob/main/docs/CONTRACTS.md) specifies
   the four interfaces between framehands, framenpu and the framenpu-cdsp device
   backend (session API, model manifest, device plugin ABI, service protocol).
   `framenpu.contracts` gives the session and plugin protocols and a manifest

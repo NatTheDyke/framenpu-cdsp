@@ -4,7 +4,7 @@ import random
 import struct
 import unittest
 
-from framenpu import Device, JobResult
+from framenpu_cdsp import Device, JobResult
 from test_library import FakeTransport
 
 

@@ -3,7 +3,7 @@
 import argparse
 from pathlib import Path
 
-from framenpu import Device, Model
+from framenpu_cdsp import Device, Model
 
 
 def main():

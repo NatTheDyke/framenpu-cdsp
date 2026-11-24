@@ -135,7 +135,7 @@ uncached controller; selecting cached execution with those jobs is rejected
 before device access.
 
 ```python
-from framenpu.resident_landmark import ResidentLandmark
+from framenpu_cdsp.research.resident_landmark import ResidentLandmark
 
 with ResidentLandmark(graph, cache_jobs, cached_code=True) as session:
     first = session.run(first_chw)

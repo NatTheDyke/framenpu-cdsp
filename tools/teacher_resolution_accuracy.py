@@ -17,7 +17,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / n) for n in ("src", "tests", "tools")]
 import build_ncnn_reference as B
-from framenpu.landmark import PARAM_SHA, WEIGHTS_SHA
+from framenpu_cdsp.research.landmark import PARAM_SHA, WEIGHTS_SHA
 import teacher_tail_layout as T
 
 ORDER = ("out0", "out3", "out2", "out1")
@@ -159,7 +159,7 @@ def build(reference, output):
 
 def run(oracle, model, source_corpus, oracle_corpus, target):
     import numpy as np
-    from framenpu.convolution import load_landmark_graph
+    from framenpu_cdsp.research.convolution import load_landmark_graph
 
     source = json.loads((source_corpus / "manifest.json").read_text())
     pinned = json.loads((oracle_corpus / "manifest.json").read_text())

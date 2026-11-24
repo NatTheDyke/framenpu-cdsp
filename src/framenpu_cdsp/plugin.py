@@ -1,4 +1,4 @@
-"""The CDSP device plugin: what framenpu sees of this backend (docs/CONTRACTS.md, plugin ABI 1).
+"""The CDSP device plugin: what framenpu sees of this backend (framenpu docs/CONTRACTS.md, plugin ABI 1).
 
 Registered as ``cdsp`` under the ``framenpu.devices`` entry-point group; framenpu loads it with
 ``framenpu.devices.load("cdsp", jobs=...)`` and never imports this package directly.

@@ -173,8 +173,8 @@ isolated layers fed by reference intermediates; full-graph error propagation
 and landmark/confidence tolerances remain to be established.
 
 Pin the ncnn reference build, param/bin hashes and a deterministic crop corpus.
-The [inventory command](../src/framenpu/ncnn.py) remains separate from the
-new [strict preflight](../src/framenpu/convolution.py), which checks graph connectivity, inferred shapes,
+The [inventory command](../src/framenpu_cdsp/ncnn.py) remains separate from the
+new [strict preflight](../src/framenpu_cdsp/research/convolution.py), which checks graph connectivity, inferred shapes,
 attributes, binary lengths and supported semantics before device writes.
 Decode tagged FP16/FP32 weights and FP32 biases, then transpose/prepack for
 the chosen kernel layout. ncnn's

@@ -40,7 +40,7 @@ class ConvFastBuildTests(unittest.TestCase):
             self.assertEqual(fast["code_reservation_bytes"], 16384)
             self.assertLessEqual(fast["linked"]["bytes"], 16384)
             sys.path.insert(0, str(ROOT / "src"))
-            from framenpu.resident_landmark import load_linked
+            from framenpu_cdsp.research.resident_landmark import load_linked
 
             self.assertTrue(load_linked(folder / "fast").fused)
             self.assertFalse(load_linked(folder / "tile").fused)

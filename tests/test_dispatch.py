@@ -10,7 +10,7 @@ from dataclasses import replace
 from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from framenpu import (
+from framenpu_cdsp import (
     Device,
     DeviceBusy,
     Job,
@@ -19,8 +19,8 @@ from framenpu import (
     RecoveryRequired,
     UnsupportedFirmware,
 )
-from framenpu.dispatch import DirectDispatcher, _acquire_lease, _firmware_original
-from framenpu.profile import PROFILE
+from framenpu_cdsp.dispatch import DirectDispatcher, _acquire_lease, _firmware_original
+from framenpu_cdsp.profile import PROFILE
 from test_library import FakeTransport
 
 
@@ -67,8 +67,8 @@ class DispatchTransport(FakeTransport):
 class DirectLifecycleTests(unittest.TestCase):
     def setUp(self):
         self.lease = Mock()
-        self.original = patch("framenpu.dispatch._firmware_original", return_value=ORIGINAL)
-        self.lock = patch("framenpu.dispatch._acquire_lease", return_value=self.lease)
+        self.original = patch("framenpu_cdsp.dispatch._firmware_original", return_value=ORIGINAL)
+        self.lock = patch("framenpu_cdsp.dispatch._acquire_lease", return_value=self.lease)
         self.original.start()
         self.lock.start()
         self.addCleanup(self.original.stop)
@@ -168,7 +168,7 @@ class DirectLifecycleTests(unittest.TestCase):
 
 class FirmwareWindowTests(unittest.TestCase):
     def test_worker_returns_before_master_completion_are_not_a_lease_expiry(self):
-        from framenpu.transport import Transport
+        from framenpu_cdsp.transport import Transport
 
         class Joining:
             profile = PROFILE
@@ -220,18 +220,20 @@ class FirmwareWindowTests(unittest.TestCase):
                 firmware_sha256=hashlib.sha256(firmware).hexdigest(),
                 dispatch_sha256=hashlib.sha256(ORIGINAL).hexdigest(),
             )
-            with patch("framenpu.dispatch.PROFILE", profile):
+            with patch("framenpu_cdsp.dispatch.PROFILE", profile):
                 self.assertEqual(_firmware_original(), ORIGINAL)
                 path.write_bytes(firmware[:-1] + b"x")
                 with self.assertRaises(UnsupportedFirmware):
                     _firmware_original()
             path.write_bytes(firmware)
-            with patch("framenpu.dispatch.PROFILE", replace(profile, dispatch_sha256="0" * 64)):
+            with patch(
+                "framenpu_cdsp.dispatch.PROFILE", replace(profile, dispatch_sha256="0" * 64)
+            ):
                 with self.assertRaises(UnsupportedFirmware):
                     _firmware_original()
 
     def test_transport_only_tags_explicit_direct_requests(self):
-        from framenpu.transport import Transport
+        from framenpu_cdsp.transport import Transport
 
         t = FakeTransport()
         t.profile = PROFILE

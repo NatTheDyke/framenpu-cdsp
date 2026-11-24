@@ -60,7 +60,7 @@ optional tools are not runtime dependencies of the host library.
 
 ## Preflight and selected layers
 
-[convolution.py](../src/framenpu/convolution.py) validates the complete pinned
+[convolution.py](../src/framenpu_cdsp/research/convolution.py) validates the complete pinned
 77-layer / 90-blob DAG before device access: producer order, unique blobs/names,
 supported attributes, shapes, group/weight counts, tagged FP16/FP32 storage,
 four-byte alignment, FP32 biases, finite values and exact binary EOF. It supports

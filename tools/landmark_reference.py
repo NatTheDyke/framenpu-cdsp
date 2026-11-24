@@ -11,7 +11,7 @@ import math
 
 def evaluate(graph, spec, inputs, *, hmx=True, logits=False, condition=False):
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     s = spec
     op = s["operator"]

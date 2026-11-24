@@ -12,11 +12,11 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, RecoveryRequired
-from framenpu.dispatch import DirectDispatcher, _firmware_original
-from framenpu.profile import PROFILE
-from framenpu.provenance import verify_kernel
-from framenpu.transport import Transport
+from framenpu_cdsp import Device, RecoveryRequired
+from framenpu_cdsp.dispatch import DirectDispatcher, _firmware_original
+from framenpu_cdsp.profile import PROFILE
+from framenpu_cdsp.provenance import verify_kernel
+from framenpu_cdsp.transport import Transport
 import hardware_dispatch
 import hardware_smoke
 

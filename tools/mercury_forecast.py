@@ -43,8 +43,8 @@ def pad32(n):
 
 def teacher_samples(model_dir):
     import numpy as np
-    from framenpu.convolution import load_landmark_graph
-    from framenpu.landmark import specifications
+    from framenpu_cdsp.research.convolution import load_landmark_graph
+    from framenpu_cdsp.research.landmark import specifications
     from teacher_tail_layout import tail_ops
 
     graph = load_landmark_graph(model_dir / "hand.ncnn.param", model_dir / "hand.ncnn.bin")
@@ -264,7 +264,7 @@ def main(argv=None):
         "ops": rows,
         "source_sha256": {
             "tool": digest(Path(__file__)),
-            "mercury.py": digest(ROOT / "src/framenpu/mercury.py"),
+            "mercury.py": digest(Path(mercury.__file__)),
             "teacher-tail-fp16.json": digest(ROOT / "evidence/teacher-tail-fp16.json"),
             "teacher-prefix-comparison.json": digest(
                 ROOT / "evidence/teacher-prefix-comparison.json"

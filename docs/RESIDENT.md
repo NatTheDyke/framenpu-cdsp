@@ -71,7 +71,7 @@ framenpu plan-resident examples/resident_residual.json
 ~~~
 
 Python callers can use
-`framenpu.resident.plan_resident(spec)` or `load_resident_plan(path)`.
+`framenpu_cdsp.resident.plan_resident(spec)` or `load_resident_plan(path)`.
 The standalone schedule does not import FNPU/ncnn graphs or alter
 `Model.plan()` or `Model.run()`.
 

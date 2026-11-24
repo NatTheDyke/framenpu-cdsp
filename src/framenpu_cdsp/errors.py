@@ -1,33 +1,24 @@
-"""Failures are explicit; no CPU execution fallback is provided."""
+"""The error types of framenpu.errors: the same classes, so framenpu's callers catch them by
+either name. They live in framenpu because it must raise and catch them without a backend."""
 
+from framenpu.errors import (
+    CompilerError,
+    DeviceBusy,
+    FrameNPUError,
+    InvalidModel,
+    JobFailed,
+    RecoveryRequired,
+    UnsupportedFirmware,
+    UnsupportedOperator,
+)
 
-class FrameNPUError(RuntimeError):
-    pass
-
-
-class UnsupportedFirmware(FrameNPUError):
-    pass
-
-
-class DeviceBusy(FrameNPUError):
-    pass
-
-
-class RecoveryRequired(FrameNPUError):
-    """The DSP may still execute: leave its payload and clocks intact; the stock gate may expire."""
-
-
-class JobFailed(FrameNPUError):
-    pass
-
-
-class InvalidModel(ValueError):
-    pass
-
-
-class UnsupportedOperator(InvalidModel):
-    pass
-
-
-class CompilerError(FrameNPUError):
-    pass
+__all__ = [
+    "FrameNPUError",
+    "CompilerError",
+    "DeviceBusy",
+    "RecoveryRequired",
+    "JobFailed",
+    "UnsupportedFirmware",
+    "InvalidModel",
+    "UnsupportedOperator",
+]

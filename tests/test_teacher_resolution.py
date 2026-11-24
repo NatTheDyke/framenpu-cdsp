@@ -118,7 +118,9 @@ class ResolutionMetricTests(unittest.TestCase):
             graph = SimpleNamespace(
                 param_sha256=R.PARAM_SHA, weights_sha256=R.WEIGHTS_SHA, shapes={"79": (672, 4, 4)}
             )
-            with patch("framenpu.convolution.load_landmark_graph", return_value=graph):
+            with patch(
+                "framenpu_cdsp.research.convolution.load_landmark_graph", return_value=graph
+            ):
                 with self.assertRaisesRegex(ValueError, "reproduce pinned heads exactly"):
                     R.run(oracle, folder, source, gold, 128)
 
@@ -127,7 +129,7 @@ class ResolutionMetricTests(unittest.TestCase):
         "public teacher required",
     )
     def test_smaller_graph_has_same_heads_and_four_by_four_final_map(self):
-        from framenpu.convolution import load_landmark_graph
+        from framenpu_cdsp.research.convolution import load_landmark_graph
 
         model = Path(os.environ["FNPU_TEACHER_MODEL"])
         args = (model / "hand.ncnn.param", model / "hand.ncnn.bin")

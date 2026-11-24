@@ -61,8 +61,8 @@ def summarize(graph, specs, ops, t, h, blob):
 
 
 def main():
-    from framenpu.convolution import load_landmark_graph
-    from framenpu.landmark import specifications
+    from framenpu_cdsp.research.convolution import load_landmark_graph
+    from framenpu_cdsp.research.landmark import specifications
     from teacher_tail_layout import shapes
 
     p = argparse.ArgumentParser(description=__doc__)

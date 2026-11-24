@@ -68,9 +68,9 @@ def main():
         p.error("verifies 1..200, duration 0..3600 s")
 
     import numpy as np
-    from framenpu import Device, Job
-    from framenpu.resident_gemm import _lease, RECORD
-    from framenpu.resident_landmark import CONTROL, ARENA_START, ARENA_END
+    from framenpu_cdsp import Device, Job
+    from framenpu_cdsp.research.resident_gemm import _lease, RECORD
+    from framenpu_cdsp.research.resident_landmark import CONTROL, ARENA_START, ARENA_END
     from hardware_ieee_probe import completion
     from hardware_hmx import PowerSnapshot, audited_device
     from hardware_resident import settled_health

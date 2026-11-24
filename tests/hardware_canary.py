@@ -24,7 +24,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, Job
+from framenpu_cdsp import Device, Job
 
 SAFE_FLOOR = 0x1A22000
 BUF_SIZE = 0x2000000

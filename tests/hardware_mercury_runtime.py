@@ -16,11 +16,12 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tests")]
-from framenpu import Device, mercury
+from framenpu_cdsp import Device
+from framenpu import mercury
 from framenpu import mercury_runtime as M
 from framenpu_cdsp import mercury_device as D
-from framenpu import _mercury_layout as L
-from framenpu.resident_landmark import ARENA_START, ARENA_END
+from framenpu_cdsp import _mercury_layout as L
+from framenpu_cdsp.research.resident_landmark import ARENA_START, ARENA_END
 from hardware_hmx import PowerSnapshot, audited_device
 from hardware_resident import settled_health
 from hardware_landmark import service
@@ -81,12 +82,14 @@ def main():
         "source_sha256": {
             n: hashlib.sha256((ROOT / n).read_bytes()).hexdigest()
             for n in (
-                "src/framenpu/mercury_runtime.py",
                 "src/framenpu_cdsp/mercury_device.py",
                 "src/framenpu_cdsp/_mercury_layout.py",
                 "src/framenpu_cdsp/_mercury_common.py",
                 "tests/hardware_mercury_runtime.py",
             )
+        }
+        | {
+            "framenpu/mercury_runtime.py": hashlib.sha256(Path(M.__file__).read_bytes()).hexdigest()
         },
         "baseline_sha256": hashlib.sha256(a.baseline.read_bytes()).hexdigest(),
         "cases_manifest_sha256": hashlib.sha256(

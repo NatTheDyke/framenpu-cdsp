@@ -8,7 +8,7 @@ import zipfile
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from framenpu import (
+from framenpu_cdsp import (
     Device,
     Job,
     Model,
@@ -20,8 +20,8 @@ from framenpu import (
     UnsupportedOperator,
     RecoveryRequired,
 )
-from framenpu.profile import PROFILE
-from framenpu.power import HmxPower
+from framenpu_cdsp.profile import PROFILE
+from framenpu_cdsp.power import HmxPower
 
 
 class Memory(bytearray):
@@ -190,7 +190,7 @@ class LifecycleTests(unittest.TestCase):
         class Stub(Device):
             def submit(self, job, raw, **kw):
                 calls.append((raw, kw))
-                from framenpu import JobResult
+                from framenpu_cdsp import JobResult
 
                 return JobResult(struct.pack("<4f", 2, 3, 4, 5), 0, ())
 
@@ -383,7 +383,7 @@ class PowerTests(unittest.TestCase):
                 os.environ["FNPU_HMX_MHZ"] = old
 
     def test_unknown_identity_never_writes_program(self):
-        from framenpu import UnsupportedFirmware
+        from framenpu_cdsp import UnsupportedFirmware
 
         power = self.make_power(broken_identity=True)
         with self.assertRaises(UnsupportedFirmware):
@@ -399,7 +399,7 @@ class PowerTests(unittest.TestCase):
         self.assertNotEqual(bytes(rsc[0x550:0x680]), bytes(304))
 
     def test_late_completion_does_not_claim_stock_lease_survived(self):
-        from framenpu.transport import Transport
+        from framenpu_cdsp.transport import Transport
 
         class Expired:
             profile = PROFILE

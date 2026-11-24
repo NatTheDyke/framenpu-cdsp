@@ -57,7 +57,7 @@ def _splat_pairs(values, pairs):
 def rs_params(graph, spec, kind, gin):
     """Parameter image (bytes) and scratch vectors for one resident compute op."""
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     _, b = weights_and_bias(graph, spec)
     if kind == "pw":

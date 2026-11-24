@@ -1,6 +1,6 @@
 # Pinned resident landmark execution
 
-`framenpu.resident_landmark.ResidentLandmark` keeps the pinned v20a graph's
+`framenpu_cdsp.research.resident_landmark.ResidentLandmark` keeps the pinned v20a graph's
 weights and intermediate tensors in the verified 6,152,192-byte DDR arena.
 It uploads weights once per session, streams one FP32 input per frame and
 returns the four heads. Packing and every model operation execute on DSP;
@@ -154,9 +154,9 @@ qualify the graph. A session can also be used without qualification readbacks:
 
 ```python
 from pathlib import Path
-from framenpu import Job
-from framenpu.convolution import load_landmark_graph
-from framenpu.resident_landmark import ResidentLandmark, JOB_KINDS
+from framenpu_cdsp import Job
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.resident_landmark import ResidentLandmark, JOB_KINDS
 
 graph = load_landmark_graph("hand.ncnn.param", "hand.ncnn.bin")
 jobs = {name: Job.load(Path("jobs") / f"resident_graph_{name}.fjob") for name in JOB_KINDS.values()}

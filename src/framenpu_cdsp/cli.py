@@ -13,15 +13,7 @@ from .resident import load_resident_plan
 
 
 def main(argv=None):
-    import sys
-
-    argv = sys.argv[1:] if argv is None else list(argv)
-    if argv[:1] == ["serve"]:
-        # the NPU service parses its own options; it sets its BLAS thread count before numpy loads
-        from . import service
-
-        return service.main(argv[1:])
-    parser = argparse.ArgumentParser(prog="framenpu")
+    parser = argparse.ArgumentParser(prog="framenpu-cdsp")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
     audit = sub.add_parser("inspect-ncnn", help="inventory an ncnn graph without running it")
@@ -41,9 +33,6 @@ def main(argv=None):
     build.add_argument("source", type=Path)
     build.add_argument("--output", type=Path, required=True)
     build.add_argument("--hmx", action="store_true")
-    sub.add_parser(
-        "serve", help="run the NPU service (root): framenpu serve --model M --jobs DIR --user U"
-    )
     args = parser.parse_args(argv)
     try:
         if args.command == "inspect-ncnn":
@@ -67,7 +56,7 @@ def main(argv=None):
                 json.dumps({"name": job.name, "bytes": len(job.code), "output": str(args.output)})
             )
     except (FrameNPUError, OSError, ValueError) as exc:
-        parser.exit(2, f"framenpu: {exc}\n")
+        parser.exit(2, f"framenpu-cdsp: {exc}\n")
 
 
 if __name__ == "__main__":

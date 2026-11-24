@@ -12,9 +12,9 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, Job, RecoveryRequired
-from framenpu.job import JobResult
-from framenpu.profile import PROFILE
+from framenpu_cdsp import Device, Job, RecoveryRequired
+from framenpu_cdsp.job import JobResult
+from framenpu_cdsp.profile import PROFILE
 import hardware_unwind as unwind
 from test_library import FakePower, FakeTransport
 

@@ -9,7 +9,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.compiler import BUILD_FLAGS, Toolchain, build_job
+from framenpu_cdsp.compiler import BUILD_FLAGS, Toolchain, build_job
 
 BASELINE = "95960a2049e4b438a24893fc99639191ffdbd443"
 

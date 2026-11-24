@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tests"), str(ROOT / "tools")]
 
 try:
-    from framenpu.compiler import Toolchain
+    from framenpu_cdsp.compiler import Toolchain
 
     Toolchain.discover()
     HAVE_TOOLS = True

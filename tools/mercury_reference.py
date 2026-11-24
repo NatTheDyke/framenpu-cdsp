@@ -301,8 +301,8 @@ def main(argv=None):
         "confident_peak_threshold": CONFIDENT_PEAK,
         "source_sha256": {
             "tool": digest(Path(__file__)),
-            "mercury.py": digest(ROOT / "src/framenpu/mercury.py"),
-            "onnx_graph.py": digest(ROOT / "src/framenpu/onnx_graph.py"),
+            "mercury.py": digest(Path(mercury.__file__)),
+            "onnx_graph.py": digest(Path(mercury.onnx_graph.__file__)),
         },
         "summary": summarize(result),
         **result,

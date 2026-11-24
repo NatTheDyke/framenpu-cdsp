@@ -15,8 +15,14 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.cli import main
-from framenpu.resident import ARENA_BYTES, ARENA_END, ARENA_START, load_resident_plan, plan_resident
+from framenpu_cdsp.cli import main
+from framenpu_cdsp.resident import (
+    ARENA_BYTES,
+    ARENA_END,
+    ARENA_START,
+    load_resident_plan,
+    plan_resident,
+)
 
 
 def tensor(name, kind="activation", size=128, **fields):
@@ -376,21 +382,21 @@ class ResidentCLITests(unittest.TestCase):
     def test_cli_plans_without_constructing_a_device(self):
         output = io.StringIO()
         with (
-            patch("framenpu.cli.Device", side_effect=AssertionError("device opened")),
+            patch("framenpu_cdsp.cli.Device", side_effect=AssertionError("device opened")),
             contextlib.redirect_stdout(output),
         ):
             main(["plan-resident", str(ROOT / "examples/resident_residual.json")])
         self.assertEqual(json.loads(output.getvalue())["required_bytes"], 187392)
 
     def test_cli_from_unrelated_directory_and_malformed_input_error(self):
-        env = dict(os.environ, PYTHONPATH=str(ROOT / "src"), PYTHONDONTWRITEBYTECODE="1")
+        env = dict(os.environ, PYTHONPATH=os.pathsep.join(sys.path), PYTHONDONTWRITEBYTECODE="1")
         with tempfile.TemporaryDirectory() as directory:
             for path, expected in (
                 (ROOT / "examples/resident_residual.json", 0),
                 (Path(directory) / "missing.json", 2),
             ):
                 result = subprocess.run(
-                    [sys.executable, "-B", "-m", "framenpu", "plan-resident", str(path)],
+                    [sys.executable, "-B", "-m", "framenpu_cdsp", "plan-resident", str(path)],
                     cwd=directory,
                     env=env,
                     text=True,
@@ -398,7 +404,7 @@ class ResidentCLITests(unittest.TestCase):
                 )
                 self.assertEqual(result.returncode, expected, result.stderr)
                 if expected:
-                    self.assertIn("framenpu:", result.stderr)
+                    self.assertIn("framenpu-cdsp:", result.stderr)
                     self.assertNotIn("Traceback", result.stderr)
                 else:
                     self.assertFalse(json.loads(result.stdout)["execution_supported"])

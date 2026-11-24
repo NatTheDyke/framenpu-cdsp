@@ -10,8 +10,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Job
-from framenpu.resident_landmark import JOB_KINDS
+from framenpu_cdsp import Job
+from framenpu_cdsp.research.resident_landmark import JOB_KINDS
 
 
 def verify_vectors(disassembly, symbols):

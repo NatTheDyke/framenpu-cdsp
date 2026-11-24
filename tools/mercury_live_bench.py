@@ -33,8 +33,8 @@ def main():
     from handtrack.mercury_kp import MercuryKeypoint
     from handtrack.palm import PalmTracker, SLOT_CAM
     from handtrack import mpworker
-    from framenpu import Device
-    from framenpu.resident_landmark import ARENA_START, ARENA_END
+    from framenpu_cdsp import Device
+    from framenpu_cdsp.research.resident_landmark import ARENA_START, ARENA_END
     import hashlib
 
     cv2.setNumThreads(1)

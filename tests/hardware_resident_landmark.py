@@ -11,11 +11,11 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-from framenpu import Device, DeviceBusy, Job, JobFailed, RecoveryRequired
-from framenpu.convolution import load_landmark_graph
-from framenpu.landmark import OUTPUTS, ALIASES, specifications
-import framenpu.resident_landmark as rl
-from framenpu.resident_landmark import (
+from framenpu_cdsp import Device, DeviceBusy, Job, JobFailed, RecoveryRequired
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.landmark import OUTPUTS, ALIASES, specifications
+import framenpu_cdsp.research.resident_landmark as rl
+from framenpu_cdsp.research.resident_landmark import (
     ResidentLandmark,
     JOB_KINDS,
     ARENA_START,
@@ -81,7 +81,7 @@ def make_validator(graph, crop, folder, policy, layer_checks):
             expected = logits[indices] if phase == "logits" else local[indices]
             if is_hmx:
                 # Include bias cancellation in the FP16 store's ULP allowance.
-                from framenpu.landmark import weights_and_bias
+                from framenpu_cdsp.research.landmark import weights_and_bias
 
                 _, bias = weights_and_bias(graph, s)
                 tolerance = policy["local_hmx_atol"] + policy["local_hmx_rtol"] * (
@@ -290,9 +290,9 @@ def main():
         }
         identity = {key: hashlib.sha256(job.code).hexdigest() for key, job in jobs.items()}
     source_paths = [
-        "src/framenpu/resident_landmark.py",
-        "src/framenpu/convolution.py",
-        "src/framenpu/landmark.py",
+        "src/framenpu_cdsp/research/resident_landmark.py",
+        "src/framenpu_cdsp/research/convolution.py",
+        "src/framenpu_cdsp/research/landmark.py",
         "tests/hardware_resident_landmark.py",
         "tools/landmark_reference.py",
         "src/framenpu_cdsp/sdk/entry.S",

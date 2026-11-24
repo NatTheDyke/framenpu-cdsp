@@ -12,10 +12,10 @@ import struct
 import threading
 import time
 
-from .device import Device, _matrix, _fp32
-from .errors import JobFailed, RecoveryRequired
-from .job import Job
-from .resident import ARENA_START, CONTROL, RECORD, SSR, arena_lease as _lease, plan_resident
+from ..device import Device, _matrix, _fp32
+from ..errors import JobFailed, RecoveryRequired
+from ..job import Job
+from ..resident import ARENA_START, CONTROL, RECORD, SSR, arena_lease as _lease, plan_resident
 
 SPAN = 32768
 STATE = CONTROL + 128

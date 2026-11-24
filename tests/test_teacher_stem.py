@@ -264,7 +264,8 @@ class StemGeometryTests(unittest.TestCase):
             )
         rgb = rng.uniform(-1, 1, (3, 224, 224))
         with patch(
-            "framenpu.landmark.weights_and_bias", side_effect=lambda g, s: weights[s["name"]]
+            "framenpu_cdsp.research.landmark.weights_and_bias",
+            side_effect=lambda g, s: weights[s["name"]],
         ):
             _, full = S.emulate(None, specs, rgb)
             for band in range(7):
@@ -275,8 +276,8 @@ class StemGeometryTests(unittest.TestCase):
     @unittest.skipUnless((MODEL / "hand.ncnn.bin").exists(), "public teacher required")
     def test_pinned_parameters_masks_and_composite_ddr_layout(self):
         import numpy as np
-        from framenpu.convolution import load_landmark_graph
-        from framenpu.landmark import specifications
+        from framenpu_cdsp.research.convolution import load_landmark_graph
+        from framenpu_cdsp.research.landmark import specifications
 
         graph = load_landmark_graph(MODEL / "hand.ncnn.param", MODEL / "hand.ncnn.bin")
         prefix, tail = S.build_plan(graph, specifications(graph))
@@ -303,7 +304,7 @@ class StemGeometryTests(unittest.TestCase):
 class StemBuildTests(unittest.TestCase):
     def test_optional_prefix_fits_and_preserves_qualified_images(self):
         try:
-            from framenpu.compiler import Toolchain
+            from framenpu_cdsp.compiler import Toolchain
 
             Toolchain.discover()
         except Exception as exc:

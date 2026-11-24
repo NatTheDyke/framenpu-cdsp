@@ -58,10 +58,10 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tests"), str(ROOT / "tools")]
-from framenpu import Device
-from framenpu import RecoveryRequired, JobFailed
-from framenpu.resident_gemm import _lease, RECORD
-from framenpu.resident_landmark import CONTROL, ARENA_START, ARENA_END
+from framenpu_cdsp import Device
+from framenpu_cdsp import RecoveryRequired, JobFailed
+from framenpu_cdsp.research.resident_gemm import _lease, RECORD
+from framenpu_cdsp.research.resident_landmark import CONTROL, ARENA_START, ARENA_END
 from hardware_hmx import PowerSnapshot, audited_device
 from hardware_resident import settled_health
 from hardware_landmark import digest, service
@@ -88,7 +88,6 @@ SOURCES = (
     "tests/mercury_layout.py",
     "tests/teacher_resident_layout.py",
     "tests/teacher_tail_layout.py",
-    "src/framenpu/mercury.py",
 )
 
 
@@ -669,7 +668,8 @@ def main():
         "stop_after": args.stop_after,
         "builds": {"loader": link_record["loader"], "linked": link_record["linked"]},
         "model_sha256": model.sha256,
-        "source_sha256": {n: digest(ROOT / n) for n in SOURCES},
+        "source_sha256": {n: digest(ROOT / n) for n in SOURCES}
+        | {"framenpu/mercury.py": digest(Path(mercury.__file__))},
         "cases_manifest_sha256": digest(args.cases / "manifest.json"),
         "window": [f"{T.WIN_LO:#x}", f"{T.WIN_HI:#x}"],
         "reservation": [f"{HL.CODE:#x}", f"{HL.CODE + HL.CODE_BYTES:#x}"],

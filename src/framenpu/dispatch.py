@@ -1,7 +1,0 @@
-"""Moved to framenpu_cdsp.dispatch; this name stays an alias during the library split."""
-
-import sys
-
-from framenpu_cdsp import dispatch as _module
-
-sys.modules[__name__] = _module

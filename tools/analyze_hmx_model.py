@@ -16,9 +16,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.convolution import load_landmark_graph
-from framenpu.landmark import specifications
-from framenpu.resident_landmark import resident_landmark_plan
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.landmark import specifications
+from framenpu_cdsp.research.resident_landmark import resident_landmark_plan
 
 
 def tiles(n):

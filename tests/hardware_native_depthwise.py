@@ -17,11 +17,11 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-from framenpu import Device, Job, JobFailed
-from framenpu.convolution import load_landmark_graph
-from framenpu.landmark import specifications, weights_and_bias
-from framenpu.resident_gemm import _lease, RECORD
-from framenpu.resident_landmark import ARENA_START, ARENA_END, CONTROL
+from framenpu_cdsp import Device, Job, JobFailed
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.landmark import specifications, weights_and_bias
+from framenpu_cdsp.research.resident_gemm import _lease, RECORD
+from framenpu_cdsp.research.resident_landmark import ARENA_START, ARENA_END, CONTROL
 from hardware_ieee_probe import completion
 from hardware_hmx import PowerSnapshot, audited_device
 from hardware_resident import settled_health

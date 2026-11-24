@@ -143,7 +143,7 @@ class HeadsHarnessTests(unittest.TestCase):
         from types import SimpleNamespace
         from unittest.mock import Mock, patch
         import hardware_teacher_link as L
-        from framenpu import RecoveryRequired
+        from framenpu_cdsp import RecoveryRequired
 
         class ReadOnlyMemory:
             def __getitem__(self, key):
@@ -207,10 +207,10 @@ class HeadsHarnessTests(unittest.TestCase):
                         Mock(return_value=(None, bytes(4), record)),
                     ),
                     (
-                        "framenpu.convolution.load_landmark_graph",
+                        "framenpu_cdsp.research.convolution.load_landmark_graph",
                         Mock(return_value=SimpleNamespace(param_sha256="p", weights_sha256="w")),
                     ),
-                    ("framenpu.landmark.specifications", Mock(return_value=[])),
+                    ("framenpu_cdsp.research.landmark.specifications", Mock(return_value=[])),
                     ("hardware_teacher_link._lease", Mock(return_value=Mock())),
                     ("hardware_teacher_link.PowerSnapshot", Mock(return_value=power)),
                     ("hardware_teacher_link.settled_health", Mock(return_value={})),
@@ -241,8 +241,8 @@ class HeadsHarnessTests(unittest.TestCase):
         from unittest.mock import Mock
         import struct
         import hardware_teacher_link as L
-        from framenpu import JobFailed
-        from framenpu.resident_gemm import SSR
+        from framenpu_cdsp import JobFailed
+        from framenpu_cdsp.research.resident_gemm import SSR
 
         class FakeDevice:
             def _submit(self, loader, data, **kw):
@@ -278,8 +278,8 @@ class HeadsHarnessTests(unittest.TestCase):
 class HeadsPlanTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from framenpu.convolution import load_landmark_graph
-        from framenpu.landmark import specifications
+        from framenpu_cdsp.research.convolution import load_landmark_graph
+        from framenpu_cdsp.research.landmark import specifications
 
         cls.graph = load_landmark_graph(MODEL / "hand.ncnn.param", MODEL / "hand.ncnn.bin")
         cls.specs = specifications(cls.graph)
@@ -337,7 +337,7 @@ class HeadsPlanTests(unittest.TestCase):
 class HeadsBuildTests(unittest.TestCase):
     def test_linked_heads_fit_and_reference_machine_code_is_unchanged(self):
         try:
-            from framenpu.compiler import Toolchain
+            from framenpu_cdsp.compiler import Toolchain
 
             Toolchain.discover()
         except Exception as exc:

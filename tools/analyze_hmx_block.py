@@ -227,7 +227,7 @@ def forecast_resident(summary, graph):
 def forecast(summary, graph):
     """fused3_w050 convolution ms from the median w050 unit costs."""
     from analyze_hmx_model import variants
-    from framenpu.landmark import specifications
+    from framenpu_cdsp.research.landmark import specifications
 
     specs = {s["name"]: s for s in specifications(graph)}
     _, costs = variants(graph)
@@ -276,7 +276,7 @@ def main():
     report = json.loads(args.measurement.read_text())
     result = {"format": "framenpu-hmx-block-summary", "geometries": summarize(report)}
     if args.model:
-        from framenpu.convolution import load_landmark_graph
+        from framenpu_cdsp.research.convolution import load_landmark_graph
 
         graph = load_landmark_graph(args.model / "hand.ncnn.param", args.model / "hand.ncnn.bin")
         if graph.weights_sha256 != report["model_sha256"]:

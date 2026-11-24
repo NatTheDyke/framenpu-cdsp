@@ -71,7 +71,7 @@ class DepthwiseLayoutTests(unittest.TestCase):
     def test_probes_build_within_4_kib_without_vector_stack(self):
         try:
             sys.path.insert(0, str(ROOT / "src"))
-            from framenpu.compiler import Toolchain
+            from framenpu_cdsp.compiler import Toolchain
 
             Toolchain.discover()
         except Exception as exc:  # pragma: no cover - environment dependent

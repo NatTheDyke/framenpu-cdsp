@@ -12,10 +12,15 @@ from unittest.mock import Mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-from framenpu import Job, RecoveryRequired, UnsupportedOperator
-from framenpu.job import JobResult
-from framenpu.convolution import load_landmark_graph
-from framenpu.landmark import PARAM_SHA, WEIGHTS_SHA, StreamingLandmark, tensor_lifetimes
+from framenpu_cdsp import Job, RecoveryRequired, UnsupportedOperator
+from framenpu_cdsp.job import JobResult
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.landmark import (
+    PARAM_SHA,
+    WEIGHTS_SHA,
+    StreamingLandmark,
+    tensor_lifetimes,
+)
 from landmark_reference import frozen_limits
 
 

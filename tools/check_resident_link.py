@@ -10,7 +10,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-from framenpu.resident_landmark import CODE, CODE_LAYOUTS, SEAL, STATE, load_linked
+from framenpu_cdsp.research.resident_landmark import CODE, CODE_LAYOUTS, SEAL, STATE, load_linked
 from check_resident_cache import verify_relocations, verify_vectors
 
 UNCACHED, CACHED = 0xF0000000, 0x87000000

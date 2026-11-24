@@ -22,9 +22,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, Job
-from framenpu.errors import FrameNPUError
-from framenpu.transport import Transport
+from framenpu_cdsp import Device, Job
+from framenpu_cdsp.errors import FrameNPUError
+from framenpu_cdsp.transport import Transport
 from hardware_hmx import PowerSnapshot, health
 
 REF_HZ = 19_200_000

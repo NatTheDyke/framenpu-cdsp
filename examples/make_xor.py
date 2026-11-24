@@ -3,7 +3,7 @@
 import argparse
 from pathlib import Path
 
-from framenpu import Dense, Model
+from framenpu_cdsp import Dense, Model
 
 DEFAULT = Path(__file__).with_name("xor.fnpu")
 

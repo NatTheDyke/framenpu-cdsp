@@ -1,191 +1,50 @@
-"""Import direction between the parts of the framenpu package (docs/CONTRACTS.md).
+"""Import direction (docs/CONTRACTS.md in the framenpu repository).
 
-Every module is assigned to the library it moves to in the split:
-
-- api:      framenpu proper (models, sessions, CLI); may import api modules and contracts/errors
-- device:   framenpu-cdsp (transport, power, residency, the kernel ABI planner); may import only
-            device modules
-- mixed:    modules phase 2 splits between api and device; may import api and device
-- research: earlier experiments kept out of the libraries; may import anything
-- contracts: standard library only
-
-KNOWN is today's coupling across those lines. A new crossing fails the test; so does an entry
-that no longer occurs, so the list only shrinks as the split proceeds.
+Of framenpu, the backend imports only the plugin contracts and the error types, so that package
+never sees the kernel's layout and this one never sees models or sessions. The backend's own
+modules do not import framenpu_cdsp.research.
 """
 
 import ast
 import pathlib
 import unittest
 
-SRC = pathlib.Path(__file__).resolve().parents[1] / "src"
-PKG, CDSP = SRC / "framenpu", SRC / "framenpu_cdsp"
-ALIAS = "this name stays an alias during the library split"
-
-LAYERS = {
-    "api": {
-        "__init__",
-        "__main__",
-        "_mercury_host",
-        "_native",
-        "backends",
-        "cli",
-        "devices",
-        "mercury",
-        "mercury_runtime",
-        "model",
-        "onnx_graph",
-        "service",
-        "session",
-    },
-    "device": {
-        "_mercury_common",
-        "_mercury_layout",
-        "axi",
-        "compiler",
-        "device",
-        "dispatch",
-        "errors",
-        "job",
-        "mercury_device",
-        "_layout_native",
-        "plugin",
-        "staging",
-        "power",
-        "profile",
-        "provenance",
-        "resident",
-        "transport",
-    },
-    # empty since the device plugin (phase 5 step 1): framenpu reaches the backend only through
-    # framenpu.devices
-    "mixed": set(),
-    "research": {"convolution", "landmark", "ncnn", "resident_gemm", "resident_landmark"},
-    "contracts": {"contracts"},
-}
-ALLOWED = {
-    "api": {"api", "contracts"},
-    "device": {"device", "contracts"},
-    "mixed": {"api", "device", "mixed", "contracts"},
-    "research": {"api", "device", "mixed", "research", "contracts"},
-    "contracts": set(),
-}
-SHARED = {"errors"}  # owned by the device backend, re-exported by framenpu: any layer may import
-
-KNOWN = {
-    # the package root still exposes the device and early compiler API
-    ("__init__", "device"),
-    ("__init__", "job"),
-    # the early CLI drives the device directly
-    ("cli", "compiler"),
-    ("cli", "ncnn"),
-    ("cli", "resident"),
-    # the early Dense/ReLU model packs matrices with device helpers
-    ("model", "device"),
-    ("model", "profile"),
-}
-
-
-def layer_of(module):
-    for name, members in LAYERS.items():
-        if module in members:
-            return name
-    raise KeyError(module)
-
-
-def sources():
-    """Module name -> file, for both packages; framenpu's alias files are not sources."""
-    out = {}
-    for pkg in (PKG, CDSP):
-        for p in sorted(pkg.glob("*.py")):
-            if pkg == CDSP and p.stem == "__init__":
-                continue
-            if pkg == PKG and ALIAS in p.read_text():
-                continue
-            if p.stem in out:
-                raise AssertionError(f"{p.stem} is a source in both packages")
-            out[p.stem] = p
-    return out
+PKG = pathlib.Path(__file__).resolve().parents[1] / "src/framenpu_cdsp"
+ALLOWED = {"framenpu.contracts", "framenpu.errors"}
 
 
 def imports(path):
-    """Package-internal modules a file imports (any depth: lazy imports count)."""
-    found = set()
+    """Absolute module names a file imports (any depth: lazy imports count)."""
+    package = ("framenpu_cdsp",) + path.relative_to(PKG).parts[:-1]
     for node in ast.walk(ast.parse(path.read_text(), str(path))):
-        if isinstance(node, ast.ImportFrom):
-            if node.level == 1 and node.module:
-                found.add(node.module.split(".")[0])
-            elif node.level == 1:
-                found.update(a.name for a in node.names)
-            elif (
-                node.level == 0
-                and node.module
-                and node.module.split(".")[0] in ("framenpu", "framenpu_cdsp")
-            ):
-                parts = node.module.split(".")
-                found.update([parts[1]] if len(parts) > 1 else [a.name for a in node.names])
-        elif isinstance(node, ast.Import):
-            for a in node.names:
-                parts = a.name.split(".")
-                if parts[0] in ("framenpu", "framenpu_cdsp") and len(parts) > 1:
-                    found.add(parts[1])
-    return {m for m in found if m in sources()}
-
-
-def crossings():
-    out = set()
-    for src, path in sources().items():
-        sl = layer_of(src)
-        for dst in imports(path) - {src}:
-            dl = layer_of(dst)
-            if sl == "contracts" or (dst not in SHARED and dl != sl and dl not in ALLOWED[sl]):
-                out.add((src, dst))
-    return out
+        if isinstance(node, ast.Import):
+            yield from (a.name for a in node.names)
+        elif isinstance(node, ast.ImportFrom):
+            base = package[: len(package) - node.level + 1] if node.level else ()
+            module = ".".join(base + ((node.module,) if node.module else ()))
+            yield from (
+                (f"{module}.{a.name}" for a in node.names) if not node.module else (module,)
+            )
 
 
 class BoundaryTests(unittest.TestCase):
-    def test_every_module_has_a_layer(self):
-        modules = set(sources())
-        assigned = set().union(*LAYERS.values())
-        self.assertEqual(modules - assigned, set(), "assign new modules to a layer")
-        self.assertEqual(assigned - modules, set(), "drop removed modules from LAYERS")
+    def test_framenpu_is_reached_only_through_contracts_and_errors(self):
+        for path in PKG.rglob("*.py"):
+            for name in imports(path):
+                if name.split(".")[0] == "framenpu":
+                    self.assertIn(name, ALLOWED, path)
 
-    def test_device_modules_live_in_framenpu_cdsp(self):
-        where = {m: p.parent.name for m, p in sources().items()}
-        for m, pkg in where.items():
-            self.assertEqual(pkg, "framenpu_cdsp" if layer_of(m) == "device" else "framenpu", m)
+    def test_the_backend_does_not_import_research(self):
+        for path in PKG.glob("*.py"):
+            for name in imports(path):
+                self.assertFalse(name.startswith("framenpu_cdsp.research"), path)
 
-    def test_old_names_are_aliases_of_the_same_module(self):
-        import importlib
+    def test_errors_are_framenpus_own_classes(self):
+        import framenpu.errors
+        import framenpu_cdsp.errors
 
-        for m in sorted(m for m in LAYERS["device"] if (PKG / f"{m}.py").exists()):
-            self.assertIs(
-                importlib.import_module(f"framenpu.{m}"),
-                importlib.import_module(f"framenpu_cdsp.{m}"),
-            )
-        from framenpu import RecoveryRequired
-        from framenpu_cdsp.errors import RecoveryRequired as moved
-
-        self.assertIs(RecoveryRequired, moved)
-
-    def test_no_new_crossings(self):
-        self.assertEqual(crossings() - KNOWN, set())
-
-    def test_known_crossings_still_occur(self):
-        self.assertEqual(KNOWN - crossings(), set(), "a crossing was removed: drop it from KNOWN")
-
-    def test_contracts_import_only_the_standard_library(self):
-        tree = ast.parse((PKG / "contracts.py").read_text())
-        for node in ast.walk(tree):
-            if isinstance(node, ast.ImportFrom):
-                self.assertEqual(node.level, 0, "contracts imports nothing from the package")
-                self.assertNotIn(node.module.split(".")[0], {"numpy", "framenpu"})
-            elif isinstance(node, ast.Import):
-                for a in node.names:
-                    self.assertNotIn(a.name.split(".")[0], {"numpy", "framenpu"})
-
-    def test_device_modules_never_reach_up(self):
-        up = {(s, d) for s, d in crossings() if layer_of(s) == "device"}
-        self.assertEqual(up, set())
+        for name in framenpu_cdsp.errors.__all__:
+            self.assertIs(getattr(framenpu_cdsp.errors, name), getattr(framenpu.errors, name))
 
 
 if __name__ == "__main__":

@@ -165,7 +165,7 @@ class ProfileLogTests(unittest.TestCase):
 class ProfileBuildTests(unittest.TestCase):
     def test_profile_fits_and_uninstrumented_code_is_unchanged(self):
         try:
-            from framenpu.compiler import Toolchain
+            from framenpu_cdsp.compiler import Toolchain
 
             Toolchain.discover()
         except Exception as exc:

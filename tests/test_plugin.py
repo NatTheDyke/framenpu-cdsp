@@ -1,5 +1,6 @@
-"""framenpu.devices: finding device backends by entry point, and the cdsp plugin's capabilities."""
+"""The cdsp plugin: its registration, the bundled image, capabilities and clock settings."""
 
+import importlib.util
 import os
 import tomllib
 import unittest
@@ -7,36 +8,13 @@ from pathlib import Path
 from unittest.mock import patch
 
 from framenpu import devices
-from framenpu.contracts import DEVICE_ENTRY_POINTS, PLUGIN_ABI, Capabilities, DevicePlugin
+from framenpu.contracts import DEVICE_ENTRY_POINTS, PLUGIN_ABI
 
 ROOT = Path(__file__).resolve().parents[1]
 CDSP = "cdsp=framenpu_cdsp.plugin:CDSPPlugin"
 
 
-class _Plugin:
-    abi, name = PLUGIN_ABI, "fake"
-
-    def __init__(self, **options):
-        self.options = options
-
-    def capabilities(self):
-        return Capabilities(abi=self.abi, image_sha256="0" * 64, max_crops=1)
-
-    def compile(self, graph, batch):
-        raise NotImplementedError
-
-    def open(self):
-        raise NotImplementedError
-
-
-class _OldPlugin(_Plugin):
-    abi = PLUGIN_ABI + 1
-
-
-class DiscoveryTests(unittest.TestCase):
-    def env(self, value):
-        return patch.dict(os.environ, {devices.ENV: value})
-
+class RegistrationTests(unittest.TestCase):
     def test_the_package_registers_the_cdsp_backend(self):
         project = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
         self.assertEqual(
@@ -44,27 +22,27 @@ class DiscoveryTests(unittest.TestCase):
             {"cdsp": "framenpu_cdsp.plugin:CDSPPlugin"},
         )
 
-    def test_env_names_a_factory_and_load_passes_options(self):
-        with self.env(f"fake={__name__}:_Plugin"):
-            self.assertIn("fake", devices.available())
-            plugin = devices.load("fake", jobs="J")
-        self.assertIsInstance(plugin, DevicePlugin)
-        self.assertEqual(plugin.options, {"jobs": "J"})
+    def test_the_bundled_image_is_the_qualified_four_crop_build(self):
+        import hashlib
+        import json
 
-    def test_missing_backend_and_other_abi_are_unavailable(self):
-        with self.env(""), patch.object(devices.metadata, "entry_points", return_value=[]):
-            with self.assertRaisesRegex(devices.DeviceUnavailable, "registered: none"):
-                devices.load("cdsp")
-        with self.env(f"old={__name__}:_OldPlugin"):
-            with self.assertRaisesRegex(devices.DeviceUnavailable, "plugin ABI"):
-                devices.load("old")
-        with self.env(f"bad={__name__}:DiscoveryTests"):
-            with self.assertRaisesRegex(devices.DeviceUnavailable, "not a framenpu device plugin"):
-                devices.load("bad")
+        from framenpu_cdsp import mercury_device as D
 
-    def test_malformed_env_is_refused(self):
-        with self.env("cdsp"), self.assertRaises(ValueError):
-            devices.available()
+        d = D.BUNDLED_JOBS
+        self.assertEqual(
+            hashlib.sha256((d / "teacher_link.bin").read_bytes()).hexdigest(), D.CROPS4_IMAGE_SHA256
+        )
+        rec = json.loads((d / "link.json").read_text())
+        self.assertEqual(rec["linked"]["sha256"], D.CROPS4_IMAGE_SHA256)
+        self.assertEqual(rec["loader"]["sha256"], D.LOADER_SHA256)
+
+    @unittest.skipUnless(importlib.util.find_spec("numpy"), "NumPy required")
+    def test_framenpu_serve_uses_the_bundled_image_by_default(self):
+        from framenpu import service
+
+        with patch.dict(os.environ, {devices.ENV: CDSP}):
+            srv = service.Server("model", None, "unused", os.getuid(), session_factory=lambda: None)
+        self.assertEqual((srv.jobs, srv.crops), (None, 4))
 
 
 class CDSPPluginTests(unittest.TestCase):

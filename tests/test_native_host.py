@@ -1,7 +1,8 @@
-"""Host kernels (src/framenpu/host/fnpu_host.c) against the NumPy reference.
+"""Layout kernels (src/framenpu_cdsp/host/fnpu_layout.c), paired with framenpu's host kernels as a
+session pairs them, against the NumPy reference.
 
 The bundled aarch64 library is checked against its manifest everywhere. The kernels
-themselves are tested through a local build of the same source for this machine
+themselves are tested through local builds of both sources for this machine
 (needs clang and ld.lld); the session test also needs FNPU_MERCURY_MODEL and
 FNPU_MERCURY_HEADS_JOBS.
 """
@@ -53,25 +54,20 @@ class BundledLibraryTests(unittest.TestCase):
     def test_bundled_library_matches_manifest_and_source(self):
         import check_repository
 
-        check_repository.verify_host_native(ROOT / "src/framenpu")
         check_repository.verify_host_native(ROOT / "src/framenpu_cdsp", "layout")
-        for data, abi in (
-            (_native.DATA / "host", _native.ABI),
-            (_layout_native.DATA / "layout", _layout_native.ABI),
-        ):
-            rec = json.loads(data.with_name(data.name + "_aarch64.json").read_text())
-            self.assertEqual(rec["target"], "aarch64-linux-gnu")
-            self.assertEqual(rec["abi"], abi)
+        rec = json.loads((_layout_native.DATA / "layout_aarch64.json").read_text())
+        self.assertEqual(rec["target"], "aarch64-linux-gnu")
+        self.assertEqual(rec["abi"], _layout_native.ABI)
 
     def test_both_packages_carry_the_same_common_header(self):
-        a = (ROOT / "src/framenpu/host/fnpu_common.h").read_bytes()
+        a = (_native.DATA.parent / "host/fnpu_common.h").read_bytes()
         self.assertEqual(a, (ROOT / "src/framenpu_cdsp/host/fnpu_common.h").read_bytes())
 
     @unittest.skipUnless(TOOLS, "clang and ld.lld required")
     def test_bundled_library_rebuilds_byte_identical(self):
         import build_host_native as B
 
-        for lib, data in (("host", _native.DATA), ("layout", _layout_native.DATA)):
+        for lib, data in (("layout", _layout_native.DATA),):
             rec = json.loads((data / f"{lib}_aarch64.json").read_text())
             if B._tool(["clang", "--version"]).splitlines()[0].strip() != rec["toolchain"]["clang"]:
                 self.skipTest("a different clang built the bundled library")
@@ -80,17 +76,8 @@ class BundledLibraryTests(unittest.TestCase):
             self.assertEqual(got["sha256"], rec["sha256"], lib)
             self.assertEqual(got["compiler_flags"], rec["compiler_flags"], lib)
 
-    def test_host_refuses_a_library_that_differs_from_its_manifest(self):
-        rec = json.loads((_native.DATA / "host_aarch64.json").read_text())
-        with tempfile.TemporaryDirectory() as d:
-            bad = Path(d) / "host.so"
-            bad.write_bytes((_native.DATA / "host_aarch64.so").read_bytes() + b"\0")
-            with self.assertRaises(ValueError):
-                _native.Host(bad, rec)
-
     def test_bundled_is_none_off_aarch64(self):
         if ARCH != "aarch64":
-            self.assertIsNone(_native.bundled())
             self.assertIsNone(_layout_native.bundled())
 
     def test_layout_host_refuses_a_library_that_differs_from_its_manifest(self):
@@ -118,63 +105,9 @@ class KernelTests(unittest.TestCase):
     def tearDownClass(cls):
         cls.tmp.cleanup()
 
-    def test_fp16_conversion_matches_numpy(self):
-        import numpy as np
-
-        rng = np.random.default_rng(1)
-        special = np.array(
-            [
-                0x00000000,
-                0x80000000,
-                0x33000000,
-                0x33000001,
-                0x337FFFFF,
-                0x33800000,
-                0x387FC000,
-                0x387FE000,
-                0x387FF000,
-                0x38800000,
-                0x477FE000,
-                0x477FEFFF,
-                0x477FF000,
-                0x477FF001,
-                0x7F800000,
-                0xFF800000,
-                0x3F800000,
-                0x3F801000,
-                0x3F802000,
-                0x3F803000,
-            ],
-            np.uint32,
-        )
-        u = np.concatenate(
-            [special, rng.integers(0, 1 << 32, 1 << 20, dtype=np.uint64).astype(np.uint32)]
-        )
-        f = u.view(np.float32)
-        f = f[~np.isnan(f)]
-        out = np.empty(f.size, np.uint16)
-        with np.errstate(all="ignore"):
-            ref = f.astype(np.float16)
-        bad = self.host.to_f16(f, out)
-        np.testing.assert_array_equal(out, ref.view(np.uint16))
-        self.assertEqual(bad, int(np.count_nonzero(~np.isfinite(ref))))
-        h = np.arange(1 << 16, dtype=np.uint32).astype(np.uint16)
-        back = np.empty(h.size, np.float32)
-        self.host.from_f16(h, back)
-        ref = h.view(np.float16).astype(np.float32)
-        same = (back.view(np.uint32) == ref.view(np.uint32)) | (np.isnan(back) & np.isnan(ref))
-        self.assertTrue(same.all())
-
     def test_wrappers_refuse_wrong_types_and_sizes(self):
         import numpy as np
 
-        out = np.empty(4, np.uint16)
-        with self.assertRaises(TypeError):
-            self.host.to_f16(np.zeros(4, np.float64), out)
-        with self.assertRaises(ValueError):
-            self.host.to_f16(np.zeros(5, np.float32), out)
-        with self.assertRaises(TypeError):
-            self.host.to_f16(np.zeros(8, np.float32)[::2], out)
         with self.assertRaises(ValueError):
             self.layout.grid_pack(
                 np.zeros(4, np.uint16), 2, np.array([0, 9], np.int32), 4, np.empty(8, np.uint16)
@@ -183,7 +116,8 @@ class KernelTests(unittest.TestCase):
     @unittest.skipUnless(MODEL, "FNPU_MERCURY_MODEL required")
     def test_request_host_side_matches_the_numpy_path(self):
         import numpy as np
-        from framenpu import mercury, _mercury_layout as L
+        from framenpu import mercury
+        from framenpu_cdsp import _mercury_layout as L
 
         model = mercury.load_keypoint(MODEL, require_pin=False)
         plan = L.build_plan(model, prefix=True, batch=3, replay=True, pw_group=8, heads=True)
@@ -256,7 +190,8 @@ class KernelTests(unittest.TestCase):
     @unittest.skipUnless(DET_MODEL, "FNPU_MERCURY_DETECTOR required")
     def test_detector_host_side_matches_the_numpy_path(self):
         import numpy as np
-        from framenpu import mercury, _mercury_common as C, _mercury_layout as L
+        from framenpu import mercury
+        from framenpu_cdsp import _mercury_common as C, _mercury_layout as L
 
         model = mercury.load_detector(DET_MODEL, require_pin=False)
         plan = L.build_plan(
@@ -339,7 +274,8 @@ class KernelTests(unittest.TestCase):
     @unittest.skipUnless(S3D_MODEL, "FNPU_S3D_MODEL required")
     def test_stereo_student_host_side_matches_the_numpy_path(self):
         import numpy as np
-        from framenpu import mercury, _mercury_layout as L
+        from framenpu import mercury
+        from framenpu_cdsp import _mercury_layout as L
 
         model = mercury.load_keypoint(S3D_MODEL, require_pin=False)
         plan = L.build_plan(
@@ -402,7 +338,8 @@ class KernelTests(unittest.TestCase):
     @unittest.skipUnless(MODEL, "FNPU_MERCURY_MODEL required")
     def test_a_batch_equals_its_crops_one_at_a_time(self):
         import numpy as np
-        from framenpu import mercury, _mercury_layout as L
+        from framenpu import mercury
+        from framenpu_cdsp import _mercury_layout as L
 
         model = mercury.load_keypoint(MODEL, require_pin=False)
         plan = L.build_plan(
@@ -567,7 +504,7 @@ class NativeVerifyTests(unittest.TestCase):
 
     def test_native_verify_reads_the_held_words_and_detects_a_change(self):
         import struct
-        from framenpu.errors import RecoveryRequired
+        from framenpu_cdsp.errors import RecoveryRequired
 
         power = self.powered()
         self.assertIsNotNone(power._fast)

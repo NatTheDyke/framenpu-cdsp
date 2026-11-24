@@ -12,10 +12,10 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Job, JobFailed
-from framenpu.convolution import load_landmark_graph, ResidentConvolution
-from framenpu.errors import FrameNPUError
-from framenpu.provenance import verify_kernel
+from framenpu_cdsp import Job, JobFailed
+from framenpu_cdsp.research.convolution import load_landmark_graph, ResidentConvolution
+from framenpu_cdsp.errors import FrameNPUError
+from framenpu_cdsp.provenance import verify_kernel
 from hardware_hmx import PowerSnapshot, audited_device
 from hardware_resident import settled_health
 from hmx_baseline_run import percentiles

@@ -9,9 +9,9 @@ from unittest.mock import Mock
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from framenpu import Device, Job, JobFailed, RecoveryRequired
-from framenpu.profile import PROFILE
-import framenpu.resident_gemm as rg
+from framenpu_cdsp import Device, Job, JobFailed, RecoveryRequired
+from framenpu_cdsp.profile import PROFILE
+import framenpu_cdsp.research.resident_gemm as rg
 import hardware_resident
 from test_library import FakePower, FakeTransport
 

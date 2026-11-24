@@ -14,9 +14,9 @@ import threading
 import time
 
 from .convolution import ConvLayer
-from .device import Device
-from .errors import InvalidModel, RecoveryRequired, UnsupportedOperator
-from .job import Job
+from ..device import Device
+from ..errors import InvalidModel, RecoveryRequired, UnsupportedOperator
+from ..job import Job
 
 PARAM_SHA = "54e08f284ff6f121ff00f4a9c65afc38c0dbb22a32f4af44fc4e0fde6c4a1bbd"
 WEIGHTS_SHA = "b7c3d1be232725a5a143e2648858ec5aec9596c7b83c6a3c508479b04057e00c"

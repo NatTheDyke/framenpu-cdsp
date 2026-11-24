@@ -12,7 +12,7 @@ import teacher_stem_layout as S
 
 def weight_analysis(graph, specs):
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     spec = next(s for s in specs if s["name"] == S.NAMES[0])
     w, _ = weights_and_bias(graph, spec)

@@ -10,8 +10,8 @@ import sys
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from framenpu import Device
-from framenpu.dispatch import DirectDispatcher, _firmware_original
+from framenpu_cdsp import Device
+from framenpu_cdsp.dispatch import DirectDispatcher, _firmware_original
 
 
 def percentiles(values):

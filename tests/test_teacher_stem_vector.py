@@ -22,7 +22,7 @@ class VectorStemTests(unittest.TestCase):
                     self.assertLess(130 + (8 * band + y) * 58 + x + 31, 3616)
 
     def test_optional_vector_build_preserves_scalar_control_and_references(self):
-        from framenpu.compiler import Toolchain
+        from framenpu_cdsp.compiler import Toolchain
 
         try:
             Toolchain.discover()

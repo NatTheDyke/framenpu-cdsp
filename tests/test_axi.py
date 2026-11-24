@@ -6,9 +6,18 @@ import unittest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 sys.path.insert(0, os.path.dirname(__file__))
 
-from framenpu import DeviceBusy, Job, RecoveryRequired  # noqa: E402
-from framenpu.axi import AXI_RATES, CFG, CMD, PLL_PAGE, PLL_RESET, RCG_PAGE, AxiClock, rate_from_env  # noqa: E402
-from framenpu.device import Device  # noqa: E402
+from framenpu_cdsp import DeviceBusy, Job, RecoveryRequired  # noqa: E402
+from framenpu_cdsp.axi import (
+    AXI_RATES,
+    CFG,
+    CMD,
+    PLL_PAGE,
+    PLL_RESET,
+    RCG_PAGE,
+    AxiClock,
+    rate_from_env,
+)  # noqa: E402
+from framenpu_cdsp.device import Device  # noqa: E402
 from test_library import FakeTransport, Memory  # noqa: E402
 
 CRYSTAL_CFG = 0x00100000  # observed on the Frame during our jobs

@@ -41,8 +41,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-from framenpu import Job
-from framenpu.compiler import BUILD_FLAGS, SDK, Toolchain, _run
+from framenpu_cdsp import Job
+from framenpu_cdsp.compiler import BUILD_FLAGS, SDK, Toolchain, _run
 import build_teacher_resident as BR
 from check_resident_cache import verify_relocations, verify_vectors
 from check_resident_link import _constants, _symbols, verify_image

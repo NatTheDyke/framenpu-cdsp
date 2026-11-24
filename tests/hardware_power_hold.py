@@ -14,7 +14,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device
+from framenpu_cdsp import Device
 from hardware_hmx import PowerSnapshot
 from hardware_resident import settled_health
 from hardware_landmark import service

@@ -1,6 +1,6 @@
 # Security and hardware boundary
 
-FrameNPU runs trusted native supervisor code on a firmware-specific DSP.
+framenpu-cdsp runs trusted native supervisor code on a firmware-specific DSP.
 FJOB checksums detect corruption, not authenticity. Only run native jobs from
 trusted authors. The library does not isolate jobs from other DSP clients.
 

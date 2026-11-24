@@ -25,8 +25,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, Job
-from framenpu.errors import FrameNPUError
+from framenpu_cdsp import Device, Job
+from framenpu_cdsp.errors import FrameNPUError
 
 REF_HZ = 19_200_000
 MACS_PER_ITER = 32 * 32 * 32

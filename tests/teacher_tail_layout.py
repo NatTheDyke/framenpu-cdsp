@@ -165,7 +165,7 @@ def grid_of(shape):
 def pw_weights(graph, spec):
     """-> (A tile bytes ordered [o][t], bias bytes, nk, no)."""
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     cout, cin = spec["output_shape"][0], spec["input_shape"][0]
@@ -188,7 +188,7 @@ def pw_weights(graph, spec):
 def dw_weights(graph, spec):
     """-> (coefficient words [pair][tap], bias words [pair]) as bytes."""
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     c, (kh, kw) = spec["output_shape"][0], spec["kernel"]
@@ -214,7 +214,7 @@ def f16(x):
 def emulate_pw(graph, spec, x, res=None):
     """Device-contract model of one 1x1 layer (+ fused residual)."""
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     cout, cin = spec["output_shape"][0], spec["input_shape"][0]
@@ -232,7 +232,7 @@ def emulate_pw(graph, spec, x, res=None):
 def emulate_dw(graph, spec, x):
     """Device-contract model of one depthwise layer (stride 1 or 2)."""
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     c, h, wd = x.shape
@@ -256,7 +256,7 @@ def emulate_dw(graph, spec, x):
 def bound_pw(graph, spec, x, res=None):
     """Per-value allowance for one device 1x1 layer given its actual input."""
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     cout, cin = spec["output_shape"][0], spec["input_shape"][0]
@@ -271,7 +271,7 @@ def bound_pw(graph, spec, x, res=None):
 
 def bound_dw(graph, spec, x):
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     c, h, wd = x.shape
@@ -298,7 +298,7 @@ def bound_dw(graph, spec, x):
 def heads(graph, specs, last):
     """FP32 global average pool + four heads from the last tensor (host)."""
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     pooled = (
         np.asarray(last, np.float32)

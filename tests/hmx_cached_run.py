@@ -23,9 +23,9 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, Job, JobFailed, RecoveryRequired
-from framenpu.errors import FrameNPUError
-from framenpu.job import JobResult
+from framenpu_cdsp import Device, Job, JobFailed, RecoveryRequired
+from framenpu_cdsp.errors import FrameNPUError
+from framenpu_cdsp.job import JobResult
 from hardware_hmx import PowerSnapshot, audited_device, health
 from hmx_multi_run import failure_snapshot
 import hmx_baseline_run as baseline

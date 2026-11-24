@@ -13,8 +13,14 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.convolution import load_landmark_graph
-from framenpu.landmark import PARAM_SHA, WEIGHTS_SHA, OUTPUTS, specifications, tensor_lifetimes
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.landmark import (
+    PARAM_SHA,
+    WEIGHTS_SHA,
+    OUTPUTS,
+    specifications,
+    tensor_lifetimes,
+)
 from landmark_reference import evaluate, errors, frozen_limits
 
 

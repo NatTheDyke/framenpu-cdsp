@@ -12,8 +12,8 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, JobFailed
-from framenpu.provenance import verify_kernel
+from framenpu_cdsp import Device, JobFailed
+from framenpu_cdsp.provenance import verify_kernel
 from hardware_dispatch import percentiles
 from hardware_hmx import PowerSnapshot, audited_device, health
 from hardware_smoke import equal, reference

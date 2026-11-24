@@ -17,9 +17,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, Job, JobFailed, RecoveryRequired
-from framenpu.resident_gemm import SSR, RECORD, _lease
-from framenpu.resident_landmark import CONTROL, ARENA_START, ARENA_END
+from framenpu_cdsp import Device, Job, JobFailed, RecoveryRequired
+from framenpu_cdsp.research.resident_gemm import SSR, RECORD, _lease
+from framenpu_cdsp.research.resident_landmark import CONTROL, ARENA_START, ARENA_END
 from hardware_hmx import PowerSnapshot, audited_device
 from hardware_resident import settled_health
 from hardware_landmark import digest, service

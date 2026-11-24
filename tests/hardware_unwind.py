@@ -16,10 +16,10 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Job, JobFailed, RecoveryRequired
-from framenpu.errors import FrameNPUError
-from framenpu.profile import PROFILE
-from framenpu.provenance import verify_kernel
+from framenpu_cdsp import Job, JobFailed, RecoveryRequired
+from framenpu_cdsp.errors import FrameNPUError
+from framenpu_cdsp.profile import PROFILE
+from framenpu_cdsp.provenance import verify_kernel
 from hardware_hmx import PowerSnapshot, audited_device, health
 from hmx_multi_run import failure_snapshot, timing
 

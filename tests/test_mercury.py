@@ -14,7 +14,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / n) for n in ("src", "tools")]
 from framenpu import mercury, onnx_graph
-from framenpu.errors import InvalidModel, UnsupportedOperator
+from framenpu_cdsp.errors import InvalidModel, UnsupportedOperator
 
 HAVE_NUMPY = importlib.util.find_spec("numpy") is not None
 MODEL = os.environ.get("FNPU_MERCURY_MODEL")

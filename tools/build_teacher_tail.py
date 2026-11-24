@@ -14,8 +14,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Job
-from framenpu.compiler import BUILD_FLAGS, SDK, Toolchain, _run
+from framenpu_cdsp import Job
+from framenpu_cdsp.compiler import BUILD_FLAGS, SDK, Toolchain, _run
 
 KERNELS = {
     "pw": (

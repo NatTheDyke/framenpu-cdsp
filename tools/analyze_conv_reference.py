@@ -13,7 +13,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.convolution import load_landmark_graph
+from framenpu_cdsp.research.convolution import load_landmark_graph
 
 
 def stats(actual, expected, np):

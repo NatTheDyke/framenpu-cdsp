@@ -59,7 +59,7 @@ class DetectorPlanTests(unittest.TestCase):
         cls.model = mercury.load_detector(MODEL, require_pin=False)
 
     def plan(self, batch, stop_after=None):
-        from framenpu import _mercury_layout as L
+        from framenpu_cdsp import _mercury_layout as L
 
         kw = dict(PLAN, batch=batch)
         if stop_after:
@@ -70,8 +70,8 @@ class DetectorPlanTests(unittest.TestCase):
         return list(struct.iter_unpack("<32I", mp.plan.table))
 
     def simulate(self, mp, images, *, vt=None, load=True):
-        from framenpu import _mercury_common as C
-        from framenpu import _mercury_layout as L
+        from framenpu_cdsp import _mercury_common as C
+        from framenpu_cdsp import _mercury_layout as L
         import teacher_resident_layout as RL
 
         window = bytearray(C.WIN_HI - C.WIN_LO)
@@ -115,7 +115,7 @@ class DetectorPlanTests(unittest.TestCase):
             mercury.load_keypoint(MODEL, require_pin=False)
 
     def test_native_bounds(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         for stop in (None, SPLIT):
             for batch in (1, 2):
@@ -127,7 +127,7 @@ class DetectorPlanTests(unittest.TestCase):
                         self.assertTrue(ok, (stop, batch, k, row[:16]))
 
     def test_whole_plan_equals_fp16_contract(self):
-        from framenpu import _mercury_layout as L
+        from framenpu_cdsp import _mercury_layout as L
 
         mp = self.plan(2)
         self.assertEqual(mp.final, L.DET_OUTPUT)
@@ -159,8 +159,8 @@ class PackedBiasPlanTests(unittest.TestCase):
     """RS_CBIAS + RS_WIN_WIDE: packed biases expanded per op; same outputs bit for bit."""
 
     def test_detector_packed_wide_equals_fp16_contract(self):
-        from framenpu import _mercury_common as C
-        from framenpu import _mercury_layout as L
+        from framenpu_cdsp import _mercury_common as C
+        from framenpu_cdsp import _mercury_layout as L
         from framenpu import mercury
         import teacher_resident_layout as RL
 
@@ -214,8 +214,8 @@ class PackedBiasPlanTests(unittest.TestCase):
         """The post-batch stride-2 kernel stores two rows per column block. Ascending blocks
         (382fe1e6) zero the next row's first 22 columns of the 80 -> 40 layer (Conv_4), as
         the device returned; last to first (RS_S2_REV) equals the FP16 contract."""
-        from framenpu import _mercury_common as C
-        from framenpu import _mercury_layout as L
+        from framenpu_cdsp import _mercury_common as C
+        from framenpu_cdsp import _mercury_layout as L
         from framenpu import mercury
         import teacher_resident_layout as RL
 
@@ -387,7 +387,7 @@ class DetectorSessionTests(unittest.TestCase):
                     np.testing.assert_array_equal(a[name], b[name])
 
             # segment 1 never released: the kernel's error requires recovery
-            from framenpu.errors import RecoveryRequired
+            from framenpu_cdsp.errors import RecoveryRequired
 
             put = s.device._transport.put
             s.device._transport.put = lambda off, v: None
@@ -397,7 +397,7 @@ class DetectorSessionTests(unittest.TestCase):
             self.assertTrue(s.device._transport.poisoned)
 
     def test_three_models_do_not_fit(self):
-        from framenpu.errors import InvalidModel
+        from framenpu_cdsp.errors import InvalidModel
 
         # a second keypoint model at 3 crops + the detector exceed the blob region
         with self.assertRaises(InvalidModel):
@@ -405,7 +405,7 @@ class DetectorSessionTests(unittest.TestCase):
 
     @unittest.skipUnless(SLOTS_JOBS, "FNPU_MERCURY_JOBS (the --res-slots build) required")
     def test_detector_does_not_fit_the_slots_image(self):
-        from framenpu.errors import InvalidModel
+        from framenpu_cdsp.errors import InvalidModel
         from framenpu_cdsp.plugin import CDSPPlugin
 
         if CDSPPlugin(SLOTS_JOBS).features.cbias:
@@ -421,7 +421,7 @@ def mercury_outputs(model):
 
 
 def mercury_common():
-    from framenpu import _mercury_common as C
+    from framenpu_cdsp import _mercury_common as C
 
     return C
 

@@ -97,8 +97,8 @@ itself used a **gate-free host write** so it never perturbed live tracking.
 
 ~~~sh
 # Build the read-only probes on a workstation
-framenpu build-job tests/tlb_probe.c    --output build/tlb_probe.fjob
-framenpu build-job tests/canary_probe.c --output build/canary_probe.fjob
+framenpu-cdsp build-job tests/tlb_probe.c    --output build/tlb_probe.fjob
+framenpu-cdsp build-job tests/canary_probe.c --output build/canary_probe.fjob
 
 # On the Frame (as steamos)
 python tests/hardware_memmap.py --run-on-device --probe tlb_probe.fjob --count 64

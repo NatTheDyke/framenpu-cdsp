@@ -10,8 +10,8 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Job, Model, __version__
-from framenpu.provenance import verify_kernel
+from framenpu_cdsp import Job, Model, __version__
+from framenpu_cdsp.provenance import verify_kernel
 
 PUBLIC_DIRS = (
     "src",
@@ -29,7 +29,6 @@ BINARY_FILES = {
     "src/framenpu_cdsp/data/runtime.bin",
     "src/framenpu_cdsp/data/dispatch.bin",
     "src/framenpu_cdsp/data/dispatch_patch.bin",
-    "src/framenpu/data/host_aarch64.so",
     "src/framenpu_cdsp/data/layout_aarch64.so",
     "src/framenpu_cdsp/data/mercury/teacher_link.bin",
     "src/framenpu_cdsp/data/mercury/teacher_link_loader.fjob",
@@ -38,12 +37,11 @@ BINARY_FILES = {
 }
 
 
-HOST_SOURCES = {"host": "host/fnpu_host.c", "layout": "host/fnpu_layout.c"}
+HOST_SOURCES = {"layout": "host/fnpu_layout.c"}
 
 
-def verify_host_native(package, name="host"):
-    """A bundled host library (host: framenpu's model kernels, layout: framenpu_cdsp's layout
-    kernels) matches its manifest, and the manifest its sources."""
+def verify_host_native(package, name="layout"):
+    """The bundled layout library matches its manifest, and the manifest its sources."""
     record = json.loads((package / f"data/{name}_aarch64.json").read_text())
     lib = (package / f"data/{name}_aarch64.so").read_bytes()
     if record.get("bytes") != len(lib) or record.get("sha256") != hashlib.sha256(lib).hexdigest():
@@ -145,7 +143,6 @@ def check(root=ROOT):
     if "pull_request_target" in ci:
         raise ValueError("untrusted PR code must not run in a privileged workflow")
     verify_kernel(root / "src/framenpu_cdsp")
-    verify_host_native(root / "src/framenpu")
     verify_host_native(root / "src/framenpu_cdsp", "layout")
     verify_bundled_image(root / "src/framenpu_cdsp")
     Job.load(root / "examples/vector_add.fjob")

@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.resident_landmark import (
+from framenpu_cdsp.research.resident_landmark import (
     _storage_schedule,
     ACTIVATIONS,
     GUARD,
@@ -35,8 +35,8 @@ class ResidentLandmarkLayoutTests(unittest.TestCase):
             }
         ]
         with (
-            patch("framenpu.resident_landmark.specifications", return_value=specs),
-            patch("framenpu.resident_landmark.WEIGHT_BYTES", 28),
+            patch("framenpu_cdsp.research.resident_landmark.specifications", return_value=specs),
+            patch("framenpu_cdsp.research.resident_landmark.WEIGHT_BYTES", 28),
         ):
             packed, offsets = resident_weights(g)
         self.assertEqual(

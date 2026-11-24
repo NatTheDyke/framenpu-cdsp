@@ -6,8 +6,8 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from framenpu import RecoveryRequired
-from framenpu.job import JobResult
+from framenpu_cdsp import RecoveryRequired
+from framenpu_cdsp.job import JobResult
 from hardware_depthwise_profile import decode_profile_result
 
 

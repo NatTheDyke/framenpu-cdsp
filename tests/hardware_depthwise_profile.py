@@ -9,7 +9,7 @@ import struct
 import sys
 
 import hardware_resident_landmark as qualifier
-from framenpu import RecoveryRequired
+from framenpu_cdsp import RecoveryRequired
 
 
 def decode_profile_result(result):

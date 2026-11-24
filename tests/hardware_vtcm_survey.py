@@ -56,8 +56,8 @@ STATIC = (
 
 
 def build(output, source=SOURCE, name="vtcm_survey_v1"):
-    from framenpu import Job
-    from framenpu.compiler import BUILD_FLAGS, SDK, Toolchain, _run
+    from framenpu_cdsp import Job
+    from framenpu_cdsp.compiler import BUILD_FLAGS, SDK, Toolchain, _run
 
     output.mkdir(parents=True, exist_ok=True)
     t = Toolchain.discover()
@@ -148,10 +148,10 @@ def classify(samples):
 
 
 def run(args):
-    from framenpu import Job
-    from framenpu.resident_gemm import _lease, RECORD
-    from framenpu.resident_landmark import CONTROL, ARENA_START, ARENA_END
-    from framenpu import Device
+    from framenpu_cdsp import Job
+    from framenpu_cdsp.research.resident_gemm import _lease, RECORD
+    from framenpu_cdsp.research.resident_landmark import CONTROL, ARENA_START, ARENA_END
+    from framenpu_cdsp import Device
     from hardware_ieee_probe import completion
     from hardware_hmx import PowerSnapshot, audited_device
     from hardware_resident import settled_health

@@ -445,7 +445,7 @@ def synthetic_fixture(g, seed=0):
 def teacher_fixture(g, graph, y0, seed=0):
     """Public convdwclip_0 (diagonal) + conv_10 weights; synthetic clip6-range input."""
     import numpy as np
-    from framenpu.landmark import specifications, weights_and_bias
+    from framenpu_cdsp.research.landmark import specifications, weights_and_bias
 
     specs = {s["name"]: s for s in specifications(graph)}
     dw, db = weights_and_bias(graph, specs["convdwclip_0"])

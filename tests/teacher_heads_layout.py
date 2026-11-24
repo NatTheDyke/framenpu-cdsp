@@ -20,8 +20,8 @@ CAPS = {"pool": 2e-5, "out0": 0.01, "out3": 1e-4, "out2": 2e-5, "out1": 2e-5}
 
 def parameters(graph, specs):
     import numpy as np
-    from framenpu.landmark import weights_and_bias
-    from framenpu.resident_landmark import PARAM_SHA, WEIGHTS_SHA
+    from framenpu_cdsp.research.landmark import weights_and_bias
+    from framenpu_cdsp.research.resident_landmark import PARAM_SHA, WEIGHTS_SHA
 
     if (graph.param_sha256, graph.weights_sha256) != (PARAM_SHA, WEIGHTS_SHA):
         raise ValueError("heads require the pinned public teacher")

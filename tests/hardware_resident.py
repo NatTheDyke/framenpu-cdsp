@@ -13,10 +13,10 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Device, DeviceBusy, Job, JobFailed, RecoveryRequired
-from framenpu.errors import FrameNPUError
-from framenpu.resident_gemm import ResidentGemm, _lease, proof_layout
-from framenpu.provenance import verify_kernel
+from framenpu_cdsp import Device, DeviceBusy, Job, JobFailed, RecoveryRequired
+from framenpu_cdsp.errors import FrameNPUError
+from framenpu_cdsp.research.resident_gemm import ResidentGemm, _lease, proof_layout
+from framenpu_cdsp.provenance import verify_kernel
 from hardware_hmx import PowerSnapshot, audited_device, health
 from hmx_baseline_run import percentiles
 from hmx_multi_run import failure_snapshot

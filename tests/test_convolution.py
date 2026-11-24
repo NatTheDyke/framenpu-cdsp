@@ -12,8 +12,8 @@ from unittest.mock import Mock, patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "tools"))
-from framenpu import InvalidModel, Job, UnsupportedOperator, RecoveryRequired
-from framenpu.convolution import load_landmark_graph, ResidentConvolution
+from framenpu_cdsp import InvalidModel, Job, UnsupportedOperator, RecoveryRequired
+from framenpu_cdsp.research.convolution import load_landmark_graph, ResidentConvolution
 from analyze_conv_reference import full_reference_limits
 from test_resident_gemm import Emulated, session
 
@@ -276,7 +276,7 @@ class ConvolutionPreflightTests(unittest.TestCase):
                     attributes="9=3 -23310=2,0,6" if clip else "",
                 )
                 graph = load_landmark_graph(p, b, input_shape=(1, 1, 5))
-                with patch("framenpu.convolution.ResidentGemm", Tile):
+                with patch("framenpu_cdsp.research.convolution.ResidentGemm", Tile):
                     with ResidentConvolution(
                         Job(bytes(2048), "proof", True, True), graph, "conv"
                     ) as conv:

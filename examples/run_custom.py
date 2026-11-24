@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 import struct
 
-from framenpu import Device, Job
+from framenpu_cdsp import Device, Job
 
 
 def main():

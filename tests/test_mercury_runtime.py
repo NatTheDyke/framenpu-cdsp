@@ -12,11 +12,11 @@ sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tests")]
 from framenpu import mercury
 from framenpu import mercury_runtime as M
 from framenpu_cdsp import mercury_device as D
-from framenpu import _mercury_common as C
-from framenpu import _mercury_layout as L
-from framenpu.errors import RecoveryRequired
-from framenpu.resident_gemm import RECORD, SSR
-from framenpu.resident_landmark import CONTROL
+from framenpu_cdsp import _mercury_common as C
+from framenpu_cdsp import _mercury_layout as L
+from framenpu_cdsp.errors import RecoveryRequired
+from framenpu_cdsp.research.resident_gemm import RECORD, SSR
+from framenpu_cdsp.research.resident_landmark import CONTROL
 
 MODEL = os.environ.get("FNPU_MERCURY_MODEL")
 JOBS = os.environ.get("FNPU_MERCURY_JOBS")
@@ -253,7 +253,7 @@ class _Device:
                 nseg = len(data) // 128
                 self.jobs = getattr(self, "jobs", []) + [nseg]  # segments per submission
                 assert len(data) in (128, 256) and output_size == C.META_BYTES * nseg
-                from framenpu.profile import PROFILE
+                from framenpu_cdsp.profile import PROFILE
 
                 arena, late = PROFILE.arena, False
                 span = len(data) + output_size
@@ -435,7 +435,7 @@ class MercurySessionTests(_RestoredChecks, unittest.TestCase):
         import dataclasses
         from unittest.mock import patch
         from framenpu import onnx_graph
-        from framenpu.errors import InvalidModel
+        from framenpu_cdsp.errors import InvalidModel
 
         # same graph, other weights: only the file hash differs from the pinned Mercury model
         retrained = dataclasses.replace(onnx_graph.load(MODEL), sha256="0" * 64)

@@ -25,7 +25,7 @@ class ResidentPlanTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         from framenpu import mercury
-        from framenpu import _mercury_layout as L
+        from framenpu_cdsp import _mercury_layout as L
 
         cls.model = mercury.load_keypoint(MODEL, require_pin=False)
         kw = dict(prefix=True, batch=3, replay=True, pw_group=8, heads=True)
@@ -38,7 +38,7 @@ class ResidentPlanTests(unittest.TestCase):
         return np.frombuffer(mp.plan.table, "<u4").reshape(-1, 32)
 
     def test_layout(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         self.assertTrue(self.resident.resident)
         self.assertFalse(self.legacy.resident)
@@ -62,7 +62,7 @@ class ResidentPlanTests(unittest.TestCase):
         self.assertLessEqual(self.resident.vtcm_peak, self.legacy.vtcm_peak)
 
     def test_native_checks(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         for k in range(3):
             for r in self.rows(self.resident):
@@ -96,8 +96,8 @@ class ResidentPlanTests(unittest.TestCase):
         tiles=False,
         deep8=False,
     ):
-        from framenpu import _mercury_common as C
-        from framenpu import _mercury_layout as L
+        from framenpu_cdsp import _mercury_common as C
+        from framenpu_cdsp import _mercury_layout as L
         import teacher_resident_layout as RL
         from test_mercury_layout import synthetic_case
 
@@ -144,7 +144,7 @@ class ResidentPlanTests(unittest.TestCase):
                 self.assertEqual(x[name][1], y[name][1])
 
     def test_resident_matches_legacy_and_persists(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         vt = np.full((C.RES_SPAN, 32, 2), np.nan, np.float16)
         legacy = self.run_plan(self.legacy, [11, 12])
@@ -159,7 +159,7 @@ class ResidentPlanTests(unittest.TestCase):
         self.assert_same(three[1:], legacy)
 
     def test_unloaded_region_is_not_used(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         vt = np.full((C.RES_SPAN, 32, 2), np.nan, np.float16)  # region never loaded
         out = self.run_plan(self.resident, [11], resident=vt, load=False)
@@ -168,7 +168,7 @@ class ResidentPlanTests(unittest.TestCase):
             self.assert_same(out, legacy)
 
     def test_tiles_layout_and_checks(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         rows, base = self.rows(self.tiles), self.rows(self.resident)
         self.assertEqual(len(rows), len(base))
@@ -207,7 +207,7 @@ class ResidentPlanTests(unittest.TestCase):
         )
 
     def test_tiles_match_legacy(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         legacy = self.run_plan(self.legacy, [11, 12, 13])
         vt = np.full((C.RES_SPAN, 32, 2), np.nan, np.float16)
@@ -229,7 +229,7 @@ class ResidentPlanTests(unittest.TestCase):
             )
 
     def test_deep8_scratch_and_flags(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         rows, base = self.rows(self.deep8), self.rows(self.tiles)
         ok = dict(s2_direct=0, pw_group=8, mheads=True, resident=True, tiles=True)
@@ -255,7 +255,7 @@ class ResidentPlanTests(unittest.TestCase):
         self.assertFalse(C.native_ok(bad, **ok, deep8=True))
 
     def test_deep8_matches_legacy(self):
-        from framenpu import _mercury_common as C
+        from framenpu_cdsp import _mercury_common as C
 
         legacy = self.run_plan(self.legacy, [11, 12])
         vt = np.full((C.RES_SPAN, 32, 2), np.nan, np.float16)

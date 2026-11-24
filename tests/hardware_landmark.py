@@ -12,9 +12,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-from framenpu import Job, JobFailed, RecoveryRequired
-from framenpu.convolution import load_landmark_graph
-from framenpu.landmark import StreamingLandmark, OUTPUTS, ALIASES, SSR, specifications
+from framenpu_cdsp import Job, JobFailed, RecoveryRequired
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.landmark import StreamingLandmark, OUTPUTS, ALIASES, SSR, specifications
 from hardware_hmx import PowerSnapshot, audited_device
 from hardware_resident import settled_health
 from hmx_multi_run import failure_snapshot
@@ -208,8 +208,8 @@ def main():
     sources = {
         name: digest(ROOT / name)
         for name in (
-            "src/framenpu/landmark.py",
-            "src/framenpu/convolution.py",
+            "src/framenpu_cdsp/research/landmark.py",
+            "src/framenpu_cdsp/research/convolution.py",
             "tests/hardware_landmark.py",
             "tests/landmark_hmx.c",
             "tests/landmark_hvx.c",
@@ -364,7 +364,7 @@ def main():
                         expected = logits[indices] if phase == "logits" else local[indices]
                         if is_hmx:
                             # Include bias cancellation in the FP16 store's ULP allowance.
-                            from framenpu.landmark import weights_and_bias
+                            from framenpu_cdsp.research.landmark import weights_and_bias
 
                             _, bias = weights_and_bias(graph, s)
                             tolerance = policy["local_hmx_atol"] + policy["local_hmx_rtol"] * (

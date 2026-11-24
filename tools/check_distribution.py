@@ -43,6 +43,9 @@ def unpack_source(archive, destination):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dist", type=Path, default=Path("dist"))
+    parser.add_argument(
+        "--framenpu", type=Path, required=True, help="a framenpu wheel, installed beside this one"
+    )
     args = parser.parse_args(argv)
     archives = sorted(args.dist.resolve().glob("*.tar.gz"))
     wheels = sorted(args.dist.resolve().glob("*.whl"))
@@ -70,17 +73,11 @@ def main(argv=None):
             "data/runtime.bin",
             "data/runtime.json",
             "resident.py",
-            "resident_gemm.py",
-            "convolution.py",
-            "landmark.py",
-            "resident_landmark.py",
+            "research/convolution.py",
+            "data/mercury/teacher_link.bin",
+            "data/mercury/link.json",
         ):
-            package = (
-                "framenpu_cdsp"
-                if suffix.startswith(("sdk/", "data/")) or suffix == "resident.py"
-                else "framenpu"
-            )
-            if f"{package}/{suffix}" not in names:
+            if f"framenpu_cdsp/{suffix}" not in names:
                 raise ValueError(f"wheel is missing SDK/payload resource: {suffix}")
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1")
     env.pop("PYTHONPATH", None)
@@ -105,16 +102,24 @@ def main(argv=None):
         run([sys.executable, "-m", "venv", root / "venv"], cwd=root, env=env)
         bindir = root / "venv" / ("Scripts" if os.name == "nt" else "bin")
         python = bindir / ("python.exe" if os.name == "nt" else "python")
-        cli = bindir / ("framenpu.exe" if os.name == "nt" else "framenpu")
+        cli = bindir / ("framenpu-cdsp.exe" if os.name == "nt" else "framenpu-cdsp")
         work = root / "unrelated-working-directory"
         work.mkdir()
-        run([python, "-m", "pip", "install", "--no-index", "--no-deps", rebuilt], cwd=work, env=env)
+        run(
+            [python, "-m", "pip", "install", "--no-index", args.framenpu.resolve(), rebuilt],
+            cwd=work,
+            env=env,
+        )
         version = run([cli, "--version"], cwd=work, env=env).strip()
         run(
             [
                 python,
                 "-c",
-                "import framenpu.convolution, framenpu.landmark, framenpu.resident_landmark; from framenpu.mercury_runtime import MercurySession; from framenpu.provenance import verify_kernel; verify_kernel(); import sys; assert not any(n in sys.modules for n in ('mercury_layout', 'teacher_resident_layout', 'teacher_tail_layout', 'hmx_block_layout'))",
+                "import framenpu_cdsp.research.convolution, framenpu_cdsp.research.resident_landmark; "
+                "from framenpu import devices; assert devices.available() == ['cdsp']; "
+                "from framenpu_cdsp.provenance import verify_kernel; verify_kernel(); import sys; "
+                "assert not any(n in sys.modules for n in ('mercury_layout', "
+                "'teacher_resident_layout', 'teacher_tail_layout', 'hmx_block_layout'))",
             ],
             cwd=work,
             env=env,
@@ -144,7 +149,7 @@ def main(argv=None):
             [
                 python,
                 "-c",
-                "from framenpu.resident_gemm import proof_layout; assert proof_layout()['required_bytes'] == 32768",
+                "from framenpu_cdsp.research.resident_gemm import proof_layout; assert proof_layout()['required_bytes'] == 32768",
             ],
             cwd=work,
             env=env,

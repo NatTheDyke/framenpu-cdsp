@@ -334,7 +334,7 @@ Heldout requires a completed calibration with the same linked build, alias,
 budget, sources, corpus and policy.
 
 ```python
-from framenpu.resident_landmark import ResidentLandmark, load_linked
+from framenpu_cdsp.research.resident_landmark import ResidentLandmark, load_linked
 
 with ResidentLandmark(
     graph, load_linked("link-jobs"), cached_code=True, budget_ms=20, hold_power=True

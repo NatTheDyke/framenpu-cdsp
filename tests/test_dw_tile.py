@@ -162,7 +162,7 @@ class RowTileBuildTests(unittest.TestCase):
                     cwd=ROOT,
                 )
             sys.path.insert(0, str(ROOT / "src"))
-            from framenpu.resident_landmark import CODE_LAYOUTS, load_linked
+            from framenpu_cdsp.research.resident_landmark import CODE_LAYOUTS, load_linked
 
             tiled, plain = load_linked(Path(folder) / "tile"), load_linked(Path(folder) / "plain")
             self.assertEqual(CODE_LAYOUTS[tiled.loader.name], 16384)

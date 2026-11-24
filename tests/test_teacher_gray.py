@@ -150,8 +150,8 @@ int main(void) {
 class GrayPlanTests(unittest.TestCase):
     @unittest.skipUnless((MODEL / "hand.ncnn.bin").exists(), "public teacher required")
     def test_gray_planner_preserves_all_parameters_and_tail(self):
-        from framenpu.convolution import load_landmark_graph
-        from framenpu.landmark import specifications
+        from framenpu_cdsp.research.convolution import load_landmark_graph
+        from framenpu_cdsp.research.landmark import specifications
         from hardware_teacher_gray import weight_analysis
 
         g = load_landmark_graph(MODEL / "hand.ncnn.param", MODEL / "hand.ncnn.bin")
@@ -187,7 +187,7 @@ class GrayPlanTests(unittest.TestCase):
             runner.stage_gray(np.repeat(gray[None], 3, axis=0))
 
     def test_gray_build_preserves_rgb_images_and_reference_kernels(self):
-        from framenpu.compiler import Toolchain
+        from framenpu_cdsp.compiler import Toolchain
 
         try:
             Toolchain.discover()

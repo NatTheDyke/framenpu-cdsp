@@ -24,8 +24,8 @@ class NativeStride2Checks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         import numpy as np
-        from framenpu.convolution import load_landmark_graph
-        from framenpu.landmark import specifications
+        from framenpu_cdsp.research.convolution import load_landmark_graph
+        from framenpu_cdsp.research.landmark import specifications
         import teacher_resident_layout as R
 
         graph = load_landmark_graph(MODEL / "hand.ncnn.param", MODEL / "hand.ncnn.bin")

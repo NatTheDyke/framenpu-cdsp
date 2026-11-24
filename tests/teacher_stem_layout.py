@@ -18,7 +18,7 @@ CHANNELS = (24, 24, 16, 64, 64)
 
 def stem_weights(graph, spec):
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
     from hmx_block_layout import pack
 
     w, bias = weights_and_bias(graph, spec)
@@ -29,8 +29,8 @@ def stem_weights(graph, spec):
 
 def parameters(graph, specs):
     import numpy as np
-    from framenpu.resident_landmark import PARAM_SHA, WEIGHTS_SHA
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.resident_landmark import PARAM_SHA, WEIGHTS_SHA
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     if (graph.param_sha256, graph.weights_sha256) != (PARAM_SHA, WEIGHTS_SHA):
         raise ValueError("banded prefix requires the pinned teacher")
@@ -145,7 +145,7 @@ def stem_patches(rgb, rows):
 
 def emulate_stem(graph, spec, rgb, rows=range(112)):
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     patch = stem_patches(rgb, rows)
@@ -157,7 +157,7 @@ def emulate_stem(graph, spec, rgb, rows=range(112)):
 
 def bound_stem(graph, spec, rgb, rows):
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     mag = np.abs(T.f16(w)).reshape(24, 27) @ np.abs(stem_patches(rgb, rows)).reshape(27, -1)
@@ -179,7 +179,7 @@ def maxpool(x):
 def emulate_layer(graph, spec, x, *, dw=False):
     """Prefix contract: FP16 accumulation store, original FP32 bias, FP16 output."""
     import numpy as np
-    from framenpu.landmark import weights_and_bias
+    from framenpu_cdsp.research.landmark import weights_and_bias
 
     w, b = weights_and_bias(graph, spec)
     cin, h, wd = x.shape

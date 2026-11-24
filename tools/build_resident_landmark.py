@@ -8,9 +8,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu.compiler import BUILD_FLAGS, SDK, Toolchain, _run, build_job
-from framenpu import Job
-from framenpu.resident_landmark import JOB_KINDS, CODE, CODE_LAYOUTS
+from framenpu_cdsp.compiler import BUILD_FLAGS, SDK, Toolchain, _run, build_job
+from framenpu_cdsp import Job
+from framenpu_cdsp.research.resident_landmark import JOB_KINDS, CODE, CODE_LAYOUTS
 
 TESTS = ROOT / "tests"
 KERNELS = ROOT / "kernels"

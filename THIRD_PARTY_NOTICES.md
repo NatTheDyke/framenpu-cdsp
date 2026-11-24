@@ -1,6 +1,6 @@
 # Provenance and third-party materials
 
-FrameNPU's host library, SDK sources, examples, and build scripts are provided
+framenpu-cdsp's host library, SDK sources, examples, and build scripts are provided
 under the repository's MIT license. The bundled runtime.bin and vector_add.fjob
 are generated from those sources, not copied firmware images. The kernel
 manifest records the payload identity and corresponding source hashes.

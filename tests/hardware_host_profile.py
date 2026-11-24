@@ -21,10 +21,10 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tools")]
-from framenpu import Device
-from framenpu.convolution import load_landmark_graph
-from framenpu.landmark import OUTPUTS
-import framenpu.resident_landmark as rl
+from framenpu_cdsp import Device
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.landmark import OUTPUTS
+import framenpu_cdsp.research.resident_landmark as rl
 from hardware_hmx import PowerSnapshot, audited_device
 from hardware_landmark import digest, service
 from hardware_resident import settled_health
@@ -253,7 +253,7 @@ def main(argv=None):
         "tests/hardware_host_profile.py",
         "tests/hardware_hmx.py",
         "tests/hardware_resident.py",
-        "src/framenpu/resident_landmark.py",
+        "src/framenpu_cdsp/research/resident_landmark.py",
         "src/framenpu_cdsp/device.py",
         "src/framenpu_cdsp/transport.py",
         "src/framenpu_cdsp/power.py",

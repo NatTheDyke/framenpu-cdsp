@@ -174,9 +174,9 @@ This is correctness timing, not a real-time or sustained tracking qualification.
 From a source checkout with the three compiled, reviewed FJOBs:
 
 ~~~python
-from framenpu import Job
-from framenpu.convolution import load_landmark_graph
-from framenpu.landmark import StreamingLandmark
+from framenpu_cdsp import Job
+from framenpu_cdsp.research.convolution import load_landmark_graph
+from framenpu_cdsp.research.landmark import StreamingLandmark
 
 graph = load_landmark_graph("model/hand.ncnn.param", "model/hand.ncnn.bin")
 jobs = {kind: Job.load(f"build/landmark_{kind}.fjob") for kind in ("hmx", "hvx", "sigmoid")}
@@ -192,9 +192,9 @@ Build the pinned ncnn CPU adapters and private step-3 corpus as described in
 python tools/prepare_landmark_reference.py --model /path/private/model \
   --convolution-corpus /path/private/convolution-corpus \
   --reference /path/private/reference/ncnn_reference --output /path/private/landmark-corpus
-framenpu build-job tests/landmark_hmx.c --hmx --output build/landmark_hmx.fjob
-framenpu build-job tests/landmark_hvx.c --hmx --output build/landmark_hvx.fjob
-framenpu build-job tests/landmark_sigmoid.c --hmx --output build/landmark_sigmoid.fjob
+framenpu-cdsp build-job tests/landmark_hmx.c --hmx --output build/landmark_hmx.fjob
+framenpu-cdsp build-job tests/landmark_hvx.c --hmx --output build/landmark_hvx.fjob
+framenpu-cdsp build-job tests/landmark_sigmoid.c --hmx --output build/landmark_sigmoid.fjob
 ~~~
 
 Only after verifying the supported firmware,

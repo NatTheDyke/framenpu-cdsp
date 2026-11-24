@@ -16,9 +16,9 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from framenpu import CompilerError, Dense, InvalidModel, Job, Model
-from framenpu.cli import main
-from framenpu.compiler import Toolchain, build_job
+from framenpu_cdsp import CompilerError, Dense, InvalidModel, Job, Model
+from framenpu_cdsp.cli import main
+from framenpu_cdsp.compiler import Toolchain, build_job
 
 
 class ContainerSchemaTests(unittest.TestCase):
@@ -81,18 +81,18 @@ class ToolingTests(unittest.TestCase):
         with contextlib.redirect_stderr(output), self.assertRaises(SystemExit) as raised:
             main(["inspect-model", "/missing-model.fnpu"])
         self.assertEqual(raised.exception.code, 2)
-        self.assertIn("framenpu:", output.getvalue())
+        self.assertIn("framenpu-cdsp:", output.getvalue())
         self.assertNotIn("Traceback", output.getvalue())
 
     def test_missing_compiler_names_environment_override(self):
         with patch.dict(os.environ, {"CLANG": "missing-hexagon-compiler"}):
-            with patch("framenpu.compiler.shutil.which", return_value=None):
+            with patch("framenpu_cdsp.compiler.shutil.which", return_value=None):
                 with self.assertRaisesRegex(CompilerError, "CLANG"):
                     Toolchain.discover()
 
     def test_compiler_rejects_host_only_clang(self):
-        with patch("framenpu.compiler.shutil.which", side_effect=lambda name: name):
-            with patch("framenpu.compiler._run", return_value="x86, aarch64"):
+        with patch("framenpu_cdsp.compiler.shutil.which", side_effect=lambda name: name):
+            with patch("framenpu_cdsp.compiler._run", return_value="x86, aarch64"):
                 with self.assertRaisesRegex(CompilerError, "Hexagon"):
                     Toolchain.discover()
 
@@ -110,7 +110,7 @@ class ToolingTests(unittest.TestCase):
             source = root / "entry.S"
             source.write_text("placeholder; compilation is mocked")
             output = root / "nested" / "job.fjob"
-            with patch("framenpu.compiler._run", side_effect=execute):
+            with patch("framenpu_cdsp.compiler._run", side_effect=execute):
                 job = build_job(
                     source,
                     output,

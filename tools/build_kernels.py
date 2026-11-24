@@ -9,9 +9,9 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from framenpu import Job
-from framenpu.compiler import SDK, Toolchain, build_job, build_dispatch
-from framenpu.provenance import kernel_manifest, verify_kernel
+from framenpu_cdsp import Job
+from framenpu_cdsp.compiler import SDK, Toolchain, build_job, build_dispatch
+from framenpu_cdsp.provenance import kernel_manifest, verify_kernel
 
 
 def main(argv=None):

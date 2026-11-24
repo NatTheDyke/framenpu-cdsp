@@ -42,12 +42,12 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tests"), str(ROOT / "tools")]
-from framenpu import Device, Job, JobFailed
-from framenpu import RecoveryRequired
-from framenpu.resident_gemm import _lease, RECORD
-from framenpu.resident_landmark import CONTROL, ARENA_START, ARENA_END
+from framenpu_cdsp import Device, Job, JobFailed
+from framenpu_cdsp import RecoveryRequired
+from framenpu_cdsp.research.resident_gemm import _lease, RECORD
+from framenpu_cdsp.research.resident_landmark import CONTROL, ARENA_START, ARENA_END
 from hardware_hmx import PowerSnapshot, audited_device
-from framenpu.resident_gemm import SSR
+from framenpu_cdsp.research.resident_gemm import SSR
 from hardware_resident import settled_health
 from hardware_landmark import digest, service
 from hmx_multi_run import failure_snapshot
@@ -506,8 +506,8 @@ def summarize(crops, plan, linked_plan=None):
 
 
 def main():
-    from framenpu.convolution import load_landmark_graph
-    from framenpu.landmark import specifications
+    from framenpu_cdsp.research.convolution import load_landmark_graph
+    from framenpu_cdsp.research.landmark import specifications
 
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--run-on-device", action="store_true")

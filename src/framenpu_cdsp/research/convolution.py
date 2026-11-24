@@ -12,7 +12,7 @@ from pathlib import Path
 import struct
 import time
 
-from .errors import InvalidModel, UnsupportedOperator
+from ..errors import InvalidModel, UnsupportedOperator
 from .resident_gemm import ResidentGemm
 
 
