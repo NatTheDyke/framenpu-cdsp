@@ -23,7 +23,7 @@ import struct
 from dataclasses import dataclass, field
 from typing import Any
 
-from framenpu.contracts import PLUGIN_ABI, Capabilities, Refusal
+from framenpu.contracts import Capabilities, Refusal
 
 from . import _layout_native
 from . import _mercury_common as C
@@ -78,7 +78,7 @@ class CDSPPlan:
 
 
 class CDSPPlugin:
-    abi = PLUGIN_ABI
+    abi = 1  # the ABI this plugin implements: never framenpu's PLUGIN_ABI, which it is checked against
     name = "cdsp"
 
     def __init__(

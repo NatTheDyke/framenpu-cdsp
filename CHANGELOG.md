@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- The plugin states the device plugin ABI it implements (1) itself. It copied framenpu's
+  `PLUGIN_ABI`, so a framenpu of another ABI would have loaded it.
+
 ## framenpu-cdsp 0.1.2
 
 - NumPy (>=1.26), which the staging, layout and power modules import, is a declared dependency.

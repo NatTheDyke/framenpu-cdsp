@@ -80,3 +80,9 @@ jobs:
         run: python _framenpu/tools/fetch_models.py models --env | sed 's/^export //' >> "$GITHUB_ENV"
       - name: Tests with the models
         run: python -m unittest discover -s tests -p 'test_*.py' -v
+
+  integration:
+    # the tracker, framehands, framenpu and this commit together (the tracker's integration/README.md)
+    uses: NatTheDyke/steam-frame-hand-tracking/.github/workflows/integration.yml@main
+    with:
+      framenpu-cdsp: ${{ github.sha }}

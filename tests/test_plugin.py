@@ -2,13 +2,15 @@
 
 import importlib.util
 import os
+import sys
 import tomllib
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 from framenpu import devices
-from framenpu.contracts import DEVICE_ENTRY_POINTS, PLUGIN_ABI
+from framenpu import contracts
+from framenpu.contracts import DEVICE_ENTRY_POINTS
 
 ROOT = Path(__file__).resolve().parents[1]
 CDSP = "cdsp=framenpu_cdsp.plugin:CDSPPlugin"
@@ -45,6 +47,33 @@ class RegistrationTests(unittest.TestCase):
         self.assertEqual((srv.jobs, srv.crops), (None, 4))
 
 
+class ABITests(unittest.TestCase):
+    """The plugin states its own ABI, so a framenpu of another one refuses it."""
+
+    def test_a_framenpu_of_another_abi_refuses_the_plugin(self):
+        # as installed beside that framenpu: imported after its PLUGIN_ABI changed
+        kept = {n: m for n, m in sys.modules.items() if n.split(".")[0] == "framenpu_cdsp"}
+        for n in kept:
+            del sys.modules[n]
+        try:
+            with (
+                patch.object(contracts, "PLUGIN_ABI", 2),
+                patch.object(devices, "PLUGIN_ABI", 2),
+                patch.object(devices, "abi_compatible", lambda abi: abi == 2),
+                patch.dict(os.environ, {devices.ENV: CDSP}),
+                self.assertRaisesRegex(devices.DeviceUnavailable, "plugin ABI 1; framenpu supp"),
+            ):
+                devices.load("cdsp")
+        finally:
+            for n in [n for n in sys.modules if n.split(".")[0] == "framenpu_cdsp"]:
+                del sys.modules[n]
+            sys.modules.update(kept)
+
+    def test_this_framenpu_accepts_it(self):
+        with patch.dict(os.environ, {devices.ENV: CDSP}):
+            self.assertTrue(contracts.abi_compatible(devices.load("cdsp").abi))
+
+
 class CDSPPluginTests(unittest.TestCase):
     def test_bundled_image_capabilities(self):
         with patch.dict(os.environ, {devices.ENV: CDSP}):
@@ -54,9 +83,7 @@ class CDSPPluginTests(unittest.TestCase):
         caps = plugin.capabilities()
         self.assertEqual(plugin.jobs, str(D.BUNDLED_JOBS))
         self.assertEqual(caps.image_sha256, D.CROPS4_IMAGE_SHA256)
-        self.assertEqual(
-            (caps.abi, caps.max_crops, caps.segments, caps.stream), (PLUGIN_ABI, 4, 2, True)
-        )
+        self.assertEqual((caps.abi, caps.max_crops, caps.segments, caps.stream), (1, 4, 2, True))
         self.assertEqual(caps.resident_slots, D.RES_SLOTS)
         self.assertLessEqual({"heads", "resident", "cbias", "tiles", "deep8"}, caps.features)
 
