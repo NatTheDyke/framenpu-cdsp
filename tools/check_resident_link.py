@@ -24,7 +24,7 @@ def _constants(text):
 
 def verify_loader(disassembly, symbols):
     """Vectors as in the cache entry; dispatch enters only a sealed image."""
-    verify_vectors(disassembly, symbols)
+    verify_vectors(disassembly, symbols, transparent=True)
     dispatch = disassembly.split("<resident_dispatch>:", 1)[1].split(">:", 1)[0]
     constants = _constants(dispatch)
     required = {UNCACHED + STATE + 124, SEAL, UNCACHED + CODE, CACHED + CODE}

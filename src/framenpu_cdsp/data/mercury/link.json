@@ -30,16 +30,16 @@
         "objcopy": "llvm-objcopy, compatible with GNU objcopy"
       },
       "sources": {
-        "kernels/resident_graph_entry.S": "57e27b11bf2cbf050cb51a18560077db700e1e10ab8ec5c3c81f407d31f81894",
+        "kernels/resident_graph_entry.S": "b15ec0b037031d345177f7b6f647599ab7b2455b78308124d21c6da3639ae05f",
         "src/framenpu_cdsp/sdk/hmx.S": "ca725000e846c220cdf709a82ce61d223dd0862d66687fa968e41be18f262fb6",
         "kernels/teacher_resident_probe.c": "6b1540cc0e3f3ed495d692f22f306dc22b8d56db727c37c178b86a0c34bb11a3",
         "kernels/landmark_common.h": "e2e922baaf80e217350ee3926e445449430ccbdb7cf3f55ed8409d73e89909bb",
-        "tests/teacher_tail_layout.py": "24c1622eb2da3a1e1da5c7ddb5d9588eb42cb065580bdf33bb4bdf06171647b1",
-        "tests/teacher_resident_layout.py": "75befba97bb29555c298be6e71568dcaf52fd9ea23464a042575a3faae87c2ab",
-        "tests/hmx_block_layout.py": "ced35770431898d9a89255a801934a5896b6b5f7dcc71510ac60683612d1ac9b",
+        "tests/teacher_tail_layout.py": "7d3e31f7d340e0ca2ff9b5ed2478073a9881ac09c182a206a8fbfebffe61e517",
+        "tests/teacher_resident_layout.py": "d20e85e58c4468e93363610ee90d3dbc3b5d2cd8a91b72487ade5f346f2931c6",
+        "tests/hmx_block_layout.py": "7a62d8af68dea0dc6b4fc4d1bb07755ac3b8a8b6da1a26f7793a8a24421d2fb5",
         "src/framenpu_cdsp/sdk/include/framenpu.h": "4e65f4b8fb82586428a810714d91540685cc4895810ad5bb753b178e1db62754",
         "src/framenpu_cdsp/sdk/include/fnpu_readback.h": "4c5fd740bcc9269a64d7923d51cedd11bda2a1b4ed5430dcd796332e20a8f820",
-        "src/framenpu_cdsp/sdk/link.ld": "c0b7dd53a7e254de549280ead79f303db3ab657e13e8565e5be3852c29a08e82"
+        "src/framenpu_cdsp/sdk/link.ld": "0bd5c89be74ec7f902510827285e7b1ce5f1e98ba0e5db24ebc5aebd418df6cb"
       }
     },
     "dw": {
@@ -71,15 +71,15 @@
         "objcopy": "llvm-objcopy, compatible with GNU objcopy"
       },
       "sources": {
-        "kernels/resident_graph_entry.S": "57e27b11bf2cbf050cb51a18560077db700e1e10ab8ec5c3c81f407d31f81894",
+        "kernels/resident_graph_entry.S": "b15ec0b037031d345177f7b6f647599ab7b2455b78308124d21c6da3639ae05f",
         "kernels/teacher_dw_probe.c": "f747a81f72417240b7657d8257991266f7910956f5c0df62940505e6f1fe25b7",
         "kernels/landmark_common.h": "e2e922baaf80e217350ee3926e445449430ccbdb7cf3f55ed8409d73e89909bb",
-        "tests/teacher_tail_layout.py": "24c1622eb2da3a1e1da5c7ddb5d9588eb42cb065580bdf33bb4bdf06171647b1",
-        "tests/teacher_resident_layout.py": "75befba97bb29555c298be6e71568dcaf52fd9ea23464a042575a3faae87c2ab",
-        "tests/hmx_block_layout.py": "ced35770431898d9a89255a801934a5896b6b5f7dcc71510ac60683612d1ac9b",
+        "tests/teacher_tail_layout.py": "7d3e31f7d340e0ca2ff9b5ed2478073a9881ac09c182a206a8fbfebffe61e517",
+        "tests/teacher_resident_layout.py": "d20e85e58c4468e93363610ee90d3dbc3b5d2cd8a91b72487ade5f346f2931c6",
+        "tests/hmx_block_layout.py": "7a62d8af68dea0dc6b4fc4d1bb07755ac3b8a8b6da1a26f7793a8a24421d2fb5",
         "src/framenpu_cdsp/sdk/include/framenpu.h": "4e65f4b8fb82586428a810714d91540685cc4895810ad5bb753b178e1db62754",
         "src/framenpu_cdsp/sdk/include/fnpu_readback.h": "4c5fd740bcc9269a64d7923d51cedd11bda2a1b4ed5430dcd796332e20a8f820",
-        "src/framenpu_cdsp/sdk/link.ld": "c0b7dd53a7e254de549280ead79f303db3ab657e13e8565e5be3852c29a08e82"
+        "src/framenpu_cdsp/sdk/link.ld": "0bd5c89be74ec7f902510827285e7b1ce5f1e98ba0e5db24ebc5aebd418df6cb"
       }
     }
   },
@@ -114,8 +114,8 @@
   "pw_lg": 3,
   "post_batch": true,
   "loader": {
-    "bytes": 3128,
-    "sha256": "cc81fb7ec3ad340da8fe3ba7f3c930689cd9fd81861a5fe8cab29babc7247524",
+    "bytes": 3352,
+    "sha256": "56cbe6836d17bcad31948380a453e6408cf5660b9425aaa93aae9d0227743fd1",
     "name": "teacher_link_loader_v1"
   },
   "linked": {
@@ -153,7 +153,7 @@
     "objcopy": "llvm-objcopy, compatible with GNU objcopy"
   },
   "sources": {
-    "kernels/resident_graph_entry.S": "57e27b11bf2cbf050cb51a18560077db700e1e10ab8ec5c3c81f407d31f81894",
+    "kernels/resident_graph_entry.S": "b15ec0b037031d345177f7b6f647599ab7b2455b78308124d21c6da3639ae05f",
     "kernels/teacher_link_admin.c": "819cb0ccd4b72942af8a26fe924fe1df5d13c0bc13dacf22f315b870f72a6a59",
     "kernels/teacher_link.c": "ca3b68dee932e47fe2374d3016b0980a1cebacb105dad57643ccc562c16e9c5b",
     "kernels/teacher_link.ld": "66ed63f152fb6dbd0e3013cb00ce82e7836c69b2e853ef9ad53022afd2b2a496",
@@ -161,19 +161,19 @@
     "kernels/teacher_dw_probe.c": "f747a81f72417240b7657d8257991266f7910956f5c0df62940505e6f1fe25b7",
     "kernels/teacher_heads.c": "9d8d8998444a7595cdec642e622a3bd2bf78f0caebcce42ac05ed2c47c670c79",
     "kernels/teacher_heads_check.h": "c1a82e8e8e06868e41c74b681e674da7b986d77d64619a0b408ce42ae8bfd481",
-    "tests/teacher_heads_layout.py": "b7b6f833a557c203333656c3902c0f3aa7314f74317361bf91dbd4fb998a8bb1",
+    "tests/teacher_heads_layout.py": "ff859d693ee18cda502fc2cf067f6c7fbdc1e6d0f95b3e09129fd89a3fc17a86",
     "kernels/teacher_stem_check.h": "b31d13ae21a58e533810f68919946d8fdd99f74b907285dd23e7f60fffcbde7d",
     "kernels/teacher_stem_impl.h": "521a9b5abe38d41e4b4b2857fd4868fb52fae379c9527845968efa03833c08c4",
     "kernels/teacher_stem_vector.h": "281ec9af6f76bafae26b305930d8ecf10a4aafc63d1fe3afd1528eb70f4554cc",
-    "tests/teacher_stem_layout.py": "60619a8ae8a0bbc822dc316383ea0071fead02eaa1dbf14f92edeb24b926f869",
+    "tests/teacher_stem_layout.py": "14016a023a8c531ab237d1e93bd95e1122d82b7407681de77b323fcc11fb9bcb",
     "kernels/teacher_stem_profile.h": "cf895aa027921b23b17a648742c7d430f321c342b2657e99d9083692e0ac15bc",
     "tests/teacher_stem_profile.py": "1dfa6114bbbd0d2fc30f868d5537fa50292fda0dfa7cea79dfe9b5543a893086",
     "kernels/landmark_common.h": "e2e922baaf80e217350ee3926e445449430ccbdb7cf3f55ed8409d73e89909bb",
-    "tests/teacher_tail_layout.py": "24c1622eb2da3a1e1da5c7ddb5d9588eb42cb065580bdf33bb4bdf06171647b1",
-    "tests/teacher_resident_layout.py": "75befba97bb29555c298be6e71568dcaf52fd9ea23464a042575a3faae87c2ab",
-    "tests/hmx_block_layout.py": "ced35770431898d9a89255a801934a5896b6b5f7dcc71510ac60683612d1ac9b",
+    "tests/teacher_tail_layout.py": "7d3e31f7d340e0ca2ff9b5ed2478073a9881ac09c182a206a8fbfebffe61e517",
+    "tests/teacher_resident_layout.py": "d20e85e58c4468e93363610ee90d3dbc3b5d2cd8a91b72487ade5f346f2931c6",
+    "tests/hmx_block_layout.py": "7a62d8af68dea0dc6b4fc4d1bb07755ac3b8a8b6da1a26f7793a8a24421d2fb5",
     "src/framenpu_cdsp/sdk/hmx.S": "ca725000e846c220cdf709a82ce61d223dd0862d66687fa968e41be18f262fb6",
-    "src/framenpu_cdsp/sdk/link.ld": "c0b7dd53a7e254de549280ead79f303db3ab657e13e8565e5be3852c29a08e82",
+    "src/framenpu_cdsp/sdk/link.ld": "0bd5c89be74ec7f902510827285e7b1ce5f1e98ba0e5db24ebc5aebd418df6cb",
     "src/framenpu_cdsp/sdk/include/framenpu.h": "4e65f4b8fb82586428a810714d91540685cc4895810ad5bb753b178e1db62754",
     "src/framenpu_cdsp/sdk/include/fnpu_readback.h": "4c5fd740bcc9269a64d7923d51cedd11bda2a1b4ed5430dcd796332e20a8f820"
   }

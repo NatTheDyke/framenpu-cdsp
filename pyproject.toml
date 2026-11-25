@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "framenpu-cdsp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Steam Frame CDSP device backend for framenpu: Hexagon jobs and HMX inference"
 readme = "README.md"
 requires-python = ">=3.11"

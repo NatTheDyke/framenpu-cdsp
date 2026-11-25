@@ -67,7 +67,7 @@ CROPS4_IMAGE_SHA256 = "1bcbbdd8c13540e5ff11d25355c7aac9f800008020e48a0ab19075d70
 STREAM_LATE = 0x7D  # the kernel's error when segment 1 was not staged within 5 ms
 # Straight-line VTCM backup/restore (the uncached slot refetched each loop packet: 385 -> 42 us).
 # The pool loader (workers 1 and 2 enter the image too) for the 20 KiB reservation.
-LOADER_SHA256 = "cc81fb7ec3ad340da8fe3ba7f3c930689cd9fd81861a5fe8cab29babc7247524"
+LOADER_SHA256 = "56cbe6836d17bcad31948380a453e6408cf5660b9425aaa93aae9d0227743fd1"
 CODE, CODE_BYTES, SEAL_AT, SEAL = 0x1FF0000, 0x4000, 0x1FF3F80, 0x544C4E4B
 IMAGE_CACHED, SLOT_UNCACHED = 0x88FF0000, 0xF0A92000
 ADMIN_MAGIC, ADMIN_OPCODE = 0x544C4144, 112

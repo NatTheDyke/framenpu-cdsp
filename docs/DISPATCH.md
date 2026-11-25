@@ -72,6 +72,12 @@ bundled. The replacement is built from
 [dispatch.S](../src/framenpu_cdsp/sdk/dispatch.S); the helper is
 [dispatch_patch.c](../src/framenpu_cdsp/sdk/dispatch_patch.c).
 
+The install/remove job is the one job during which the firmware's main thread sits in its own timed
+wait (state 3, a 50 ms deadline held in `r1:0`) while the job's vector table is in EVB, which every
+hardware thread shares. The table's forwarding stubs must therefore change no register: up to 0.1.0
+they loaded their target into `r0`, so an interrupt of the main thread could expire the deadline at
+once and leave the DSP at `[1,1,1]`. `tests/test_vector_stubs.py` checks the shipped payloads.
+
 ## Compatibility and failures
 
 The SDK entry now supports the context-4 scheduling wrapper. Newly compiled

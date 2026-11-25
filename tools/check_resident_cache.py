@@ -14,7 +14,10 @@ from framenpu_cdsp import Job
 from framenpu_cdsp.research.resident_landmark import JOB_KINDS
 
 
-def verify_vectors(disassembly, symbols):
+def verify_vectors(disassembly, symbols, transparent=False):
+    """Every event goes to the firmware's own vector (2, 4, 6 and 8 to `fault`). With
+    `transparent` each stub must be one register-free jump, as sdk/entry.S requires;
+    otherwise the research kernels' r0 stubs."""
     instructions = {
         int(m[1], 16): m[2]
         for line in disassembly.splitlines()
@@ -28,8 +31,21 @@ def verify_vectors(disassembly, symbols):
             raise ValueError("exception vector target differs")
         if label != "fault":
             row = instructions[symbols[label]]
+            if transparent:
+                # raw encodings precede the text: an immext packet head, then the jump alone
+                jump = instructions[symbols[label] + 4]
+                target = re.search(r"\sjump 0x([0-9a-f]+) <[^>]*> \}\s*$", jump)
+                if (
+                    not re.search(r"\{\s+immext\(#0x[0-9a-f]+\)\s*$", row)
+                    or target is None
+                    or int(target[1], 16) != 0x87000000 + 4 * index
+                ):
+                    raise ValueError("forwarding stub is not a register-free firmware jump")
+                continue
             if f"r0 = #0x{index:x} ; jump" not in row or "<resident_forward_common>" not in row:
                 raise ValueError("forwarded vector index differs")
+    if transparent:
+        return
     common = disassembly.split("<resident_forward_common>:", 1)[1].split("<fault>:", 1)[0]
     if (
         "r0 = asl(r0,#0x2)" not in common

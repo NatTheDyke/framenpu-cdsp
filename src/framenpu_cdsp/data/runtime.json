@@ -2,8 +2,8 @@
   "format": "framenpu-kernel",
   "abi": 1,
   "target": "hexagonv75",
-  "bytes": 3672,
-  "sha256": "4ee5d0122fc7cc1df5960e38cbcc58e43f60e7599364dcb70d72ca47e4fa3578",
+  "bytes": 3384,
+  "sha256": "3d28b2dfda2181b589281bc0ce9e293d168e941a94569a34622d66414f7db0bb",
   "compiler_flags": [
     "--target=hexagon",
     "-mcpu=hexagonv75",
@@ -23,15 +23,15 @@
     "-G0"
   ],
   "toolchain": {
-    "clang": "clang version 23.1.4",
-    "linker": "LLD 23.1.4 (compatible with GNU linkers)",
+    "clang": "clang version 23.1.5",
+    "linker": "LLD 23.1.5 (compatible with GNU linkers)",
     "objcopy": "llvm-objcopy, compatible with GNU objcopy"
   },
   "source_sha256": {
     "compiler.py": "a922a94d2328ecff84a6947883653f8b15f0dd249f4ff09afa8f26a5b6e47c8e",
-    "sdk/entry.S": "fce39ec1dfb601ab37be23addc3570af9b662c09dfb2a59b3cb41ef62a614dd8",
+    "sdk/entry.S": "571ef96bdc6f42bd607a637d31fee76baa34d6d0e19eab27131fce2a2ddf9855",
     "sdk/hmx.S": "ca725000e846c220cdf709a82ce61d223dd0862d66687fa968e41be18f262fb6",
-    "sdk/link.ld": "c0b7dd53a7e254de549280ead79f303db3ab657e13e8565e5be3852c29a08e82",
+    "sdk/link.ld": "0bd5c89be74ec7f902510827285e7b1ce5f1e98ba0e5db24ebc5aebd418df6cb",
     "sdk/include/framenpu.h": "4e65f4b8fb82586428a810714d91540685cc4895810ad5bb753b178e1db62754",
     "sdk/include/fnpu_readback.h": "4c5fd740bcc9269a64d7923d51cedd11bda2a1b4ed5430dcd796332e20a8f820",
     "sdk/runtime.c": "ab0109990fb03ed16d2dde9c66ff1e4863caee4d02ad2bb2da4a6e7d91ab3893",
@@ -46,8 +46,8 @@
       "sha256": "d329a9ea5ddb7540c977cea989248da0a794544baa1bab5765b646fda3c34700"
     },
     "dispatch_patch.bin": {
-      "bytes": 2232,
-      "sha256": "a66980cef803fc07965a64d47b64da05eb2978b37395727be4d11bca6c0d20ee"
+      "bytes": 1944,
+      "sha256": "784e93fce479fdeda4c0b2dea964a8cba71b3d765bc870bb843c345910e5760f"
     }
   }
 }

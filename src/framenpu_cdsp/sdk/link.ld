@@ -1,4 +1,6 @@
 ENTRY(custom_job)
+/* The firmware vector table the entry stubs forward to (sdk/entry.S). */
+firmware_vectors = 0x87000000;
 SECTIONS {
  . = 0xf0a92000;
  .payload : { *(.text.entry) *(.text*) *(.rodata*) *(.data*) *(.sdata*) }

@@ -1,5 +1,19 @@
 # Changelog
 
+## framenpu-cdsp 0.1.1
+
+- The exception-vector stubs of the SDK entry and of the Mercury loader no longer overwrite `r0`.
+  EVB is shared by every hardware thread, and the firmware handler saves the interrupted thread's
+  registers only from its own first packet on. During the dispatcher install/remove job the
+  firmware's main thread holds its 50 ms acknowledgment deadline in `r1:0`, so an interrupt there
+  could expire it at once ("stock completion window expired after DSP completion"). Each stub is
+  now one extended PC-relative jump, and `tests/test_vector_stubs.py` decodes the shipped payloads.
+  New `runtime.bin`, `dispatch_patch.bin`, loader (`56cbe683…`) and example job; only the stubs and
+  the addresses after them differ. `dispatch.bin` and the Mercury image (1bcbbdd8) are unchanged.
+  On a Frame (2026-11-24): 628 install/remove jobs with no false timeout, and the old and new loader
+  give identical Mercury outputs (480 requests on random crops). The old stubs were not run as a
+  control; 4 earlier faults in about 300 such jobs are the comparison.
+
 ## framenpu-cdsp 0.1.0
 
 - framenpu's CDSP device backend as its own package, split out of framenpu 0.3.0 with its history.

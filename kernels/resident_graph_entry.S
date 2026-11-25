@@ -308,11 +308,22 @@ vectors:
  { jump forward61 }
  { jump forward62 }
  { jump forward63 }
-/* Each target receives exactly the original r0 = EVB + vector*4. */
+#ifdef RG_LINK_ENTRY
+/* No register may change here: EVB is shared by every hardware thread and the
+ * firmware handler saves the interrupted thread's registers itself (sdk/entry.S). */
+.macro resident_forward index
+forward\index:
+ { jump ##firmware_vectors + 4 * \index }
+.endm
+#else
+/* Research kernels (near the 4 KiB slot limit): compact stubs that overwrite r0.
+ * Safe only under direct dispatch, where the master, the one thread with an
+ * interrupt enabled, reloads r0 in its join loop. */
 .macro resident_forward index
 forward\index:
  { r0 = #\index; jump resident_forward_common }
 .endm
+#endif
  resident_forward 0
  resident_forward 1
  resident_forward 3
@@ -373,10 +384,12 @@ forward\index:
  resident_forward 61
  resident_forward 62
  resident_forward 63
+#ifndef RG_LINK_ENTRY
 resident_forward_common:
  { r0 = asl(r0,#2) }
  { r0 = add(r0,##0x87000000) }
  { jumpr r0 }
+#endif
 .balign 16
 fault:
 #if defined(TL_LINK_ENTRY) && defined(RG_POOL)

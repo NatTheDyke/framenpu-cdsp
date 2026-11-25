@@ -85,7 +85,7 @@ def _sha(data):
 
 
 def verify_loader(text, symbols, seal_at=SEAL_AT):
-    verify_vectors(text, symbols)
+    verify_vectors(text, symbols, transparent=True)
     dispatch = text.split("<resident_dispatch>:", 1)[1].split(">:", 1)[0]
     if not {UNCACHED + seal_at, SEAL, UNCACHED + CODE, CACHED + CODE} <= _constants(dispatch):
         raise ValueError("loader seal/alias constants differ")

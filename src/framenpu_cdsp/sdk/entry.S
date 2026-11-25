@@ -203,198 +203,76 @@ vectors:
  { jump forward61 }
  { jump forward62 }
  { jump forward63 }
-forward0:
- { r0 = ##0x87000000 }
- { jumpr r0 }
-forward1:
- { r0 = ##0x87000004 }
- { jumpr r0 }
-forward2:
- { r0 = ##0x87000008 }
- { jumpr r0 }
-forward3:
- { r0 = ##0x8700000c }
- { jumpr r0 }
-forward4:
- { r0 = ##0x87000010 }
- { jumpr r0 }
-forward5:
- { r0 = ##0x87000014 }
- { jumpr r0 }
-forward6:
- { r0 = ##0x87000018 }
- { jumpr r0 }
-forward7:
- { r0 = ##0x8700001c }
- { jumpr r0 }
-forward8:
- { r0 = ##0x87000020 }
- { jumpr r0 }
-forward9:
- { r0 = ##0x87000024 }
- { jumpr r0 }
-forward10:
- { r0 = ##0x87000028 }
- { jumpr r0 }
-forward11:
- { r0 = ##0x8700002c }
- { jumpr r0 }
-forward12:
- { r0 = ##0x87000030 }
- { jumpr r0 }
-forward13:
- { r0 = ##0x87000034 }
- { jumpr r0 }
-forward14:
- { r0 = ##0x87000038 }
- { jumpr r0 }
-forward15:
- { r0 = ##0x8700003c }
- { jumpr r0 }
-forward16:
- { r0 = ##0x87000040 }
- { jumpr r0 }
-forward17:
- { r0 = ##0x87000044 }
- { jumpr r0 }
-forward18:
- { r0 = ##0x87000048 }
- { jumpr r0 }
-forward19:
- { r0 = ##0x8700004c }
- { jumpr r0 }
-forward20:
- { r0 = ##0x87000050 }
- { jumpr r0 }
-forward21:
- { r0 = ##0x87000054 }
- { jumpr r0 }
-forward22:
- { r0 = ##0x87000058 }
- { jumpr r0 }
-forward23:
- { r0 = ##0x8700005c }
- { jumpr r0 }
-forward24:
- { r0 = ##0x87000060 }
- { jumpr r0 }
-forward25:
- { r0 = ##0x87000064 }
- { jumpr r0 }
-forward26:
- { r0 = ##0x87000068 }
- { jumpr r0 }
-forward27:
- { r0 = ##0x8700006c }
- { jumpr r0 }
-forward28:
- { r0 = ##0x87000070 }
- { jumpr r0 }
-forward29:
- { r0 = ##0x87000074 }
- { jumpr r0 }
-forward30:
- { r0 = ##0x87000078 }
- { jumpr r0 }
-forward31:
- { r0 = ##0x8700007c }
- { jumpr r0 }
-forward32:
- { r0 = ##0x87000080 }
- { jumpr r0 }
-forward33:
- { r0 = ##0x87000084 }
- { jumpr r0 }
-forward34:
- { r0 = ##0x87000088 }
- { jumpr r0 }
-forward35:
- { r0 = ##0x8700008c }
- { jumpr r0 }
-forward36:
- { r0 = ##0x87000090 }
- { jumpr r0 }
-forward37:
- { r0 = ##0x87000094 }
- { jumpr r0 }
-forward38:
- { r0 = ##0x87000098 }
- { jumpr r0 }
-forward39:
- { r0 = ##0x8700009c }
- { jumpr r0 }
-forward40:
- { r0 = ##0x870000a0 }
- { jumpr r0 }
-forward41:
- { r0 = ##0x870000a4 }
- { jumpr r0 }
-forward42:
- { r0 = ##0x870000a8 }
- { jumpr r0 }
-forward43:
- { r0 = ##0x870000ac }
- { jumpr r0 }
-forward44:
- { r0 = ##0x870000b0 }
- { jumpr r0 }
-forward45:
- { r0 = ##0x870000b4 }
- { jumpr r0 }
-forward46:
- { r0 = ##0x870000b8 }
- { jumpr r0 }
-forward47:
- { r0 = ##0x870000bc }
- { jumpr r0 }
-forward48:
- { r0 = ##0x870000c0 }
- { jumpr r0 }
-forward49:
- { r0 = ##0x870000c4 }
- { jumpr r0 }
-forward50:
- { r0 = ##0x870000c8 }
- { jumpr r0 }
-forward51:
- { r0 = ##0x870000cc }
- { jumpr r0 }
-forward52:
- { r0 = ##0x870000d0 }
- { jumpr r0 }
-forward53:
- { r0 = ##0x870000d4 }
- { jumpr r0 }
-forward54:
- { r0 = ##0x870000d8 }
- { jumpr r0 }
-forward55:
- { r0 = ##0x870000dc }
- { jumpr r0 }
-forward56:
- { r0 = ##0x870000e0 }
- { jumpr r0 }
-forward57:
- { r0 = ##0x870000e4 }
- { jumpr r0 }
-forward58:
- { r0 = ##0x870000e8 }
- { jumpr r0 }
-forward59:
- { r0 = ##0x870000ec }
- { jumpr r0 }
-forward60:
- { r0 = ##0x870000f0 }
- { jumpr r0 }
-forward61:
- { r0 = ##0x870000f4 }
- { jumpr r0 }
-forward62:
- { r0 = ##0x870000f8 }
- { jumpr r0 }
-forward63:
- { r0 = ##0x870000fc }
- { jumpr r0 }
+/* EVB is shared by every hardware thread, so while a job runs, an interrupt taken
+ * by another thread comes through these stubs. They must not touch a register:
+ * the firmware handler saves and restores the interrupted thread's registers, but
+ * only from its own first packet on. (The master takes interrupts while it holds
+ * its acknowledgment deadline in r1:0; a stub that loaded its target into r0 made
+ * that 50 ms window expire at once.) An extended PC-relative jump needs none. */
+.macro firmware_forward index
+forward\index:
+ { jump ##firmware_vectors + 4 * \index }
+.endm
+ firmware_forward 0
+ firmware_forward 1
+ firmware_forward 3
+ firmware_forward 5
+ firmware_forward 7
+ firmware_forward 9
+ firmware_forward 10
+ firmware_forward 11
+ firmware_forward 12
+ firmware_forward 13
+ firmware_forward 14
+ firmware_forward 15
+ firmware_forward 16
+ firmware_forward 17
+ firmware_forward 18
+ firmware_forward 19
+ firmware_forward 20
+ firmware_forward 21
+ firmware_forward 22
+ firmware_forward 23
+ firmware_forward 24
+ firmware_forward 25
+ firmware_forward 26
+ firmware_forward 27
+ firmware_forward 28
+ firmware_forward 29
+ firmware_forward 30
+ firmware_forward 31
+ firmware_forward 32
+ firmware_forward 33
+ firmware_forward 34
+ firmware_forward 35
+ firmware_forward 36
+ firmware_forward 37
+ firmware_forward 38
+ firmware_forward 39
+ firmware_forward 40
+ firmware_forward 41
+ firmware_forward 42
+ firmware_forward 43
+ firmware_forward 44
+ firmware_forward 45
+ firmware_forward 46
+ firmware_forward 47
+ firmware_forward 48
+ firmware_forward 49
+ firmware_forward 50
+ firmware_forward 51
+ firmware_forward 52
+ firmware_forward 53
+ firmware_forward 54
+ firmware_forward 55
+ firmware_forward 56
+ firmware_forward 57
+ firmware_forward 58
+ firmware_forward 59
+ firmware_forward 60
+ firmware_forward 61
+ firmware_forward 62
+ firmware_forward 63
 .balign 16
 fault:
  { r0 = ##0xf0a93400 }
