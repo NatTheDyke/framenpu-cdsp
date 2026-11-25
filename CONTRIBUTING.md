@@ -15,9 +15,7 @@ python tools/check_repository.py
 Python 3.11–3.14 are in the configured CI matrix. See docs/VALIDATION.md for
 versions actually tested locally.
 
-CI also installs NumPy to exercise the optional numerical tests. To run those
-locally, install `numpy>=1.26` in the development environment. Without NumPy,
-those tests skip; model-specific tests also need their documented model files.
+Model-specific tests need their documented model files.
 
 ## Changes
 

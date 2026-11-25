@@ -21,7 +21,7 @@ python3 -m venv .venv
 python -m pip install -e ../framenpu -e ".[dev]"
 ~~~
 
-Python 3.11+ is required; framenpu is the only dependency. LLVM is needed only to rebuild or
+Python 3.11+ is required; framenpu and NumPy are the only dependencies. LLVM is needed only to rebuild or
 compile kernels. Installing, inspecting models, and running offline tests require no headset or
 root access.
 

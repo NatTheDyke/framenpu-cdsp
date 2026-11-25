@@ -1,5 +1,9 @@
 # Changelog
 
+## framenpu-cdsp 0.1.2
+
+- NumPy (>=1.26), which the staging, layout and power modules import, is a declared dependency.
+
 ## framenpu-cdsp 0.1.1
 
 - The exception-vector stubs of the SDK entry and of the Mercury loader no longer overwrite `r0`.

@@ -106,7 +106,17 @@ def main(argv=None):
         work = root / "unrelated-working-directory"
         work.mkdir()
         run(
-            [python, "-m", "pip", "install", "--no-index", args.framenpu.resolve(), rebuilt],
+            # no index: dependencies are CI's dependency step; what runs here needs no NumPy
+            [
+                python,
+                "-m",
+                "pip",
+                "install",
+                "--no-index",
+                "--no-deps",
+                args.framenpu.resolve(),
+                rebuilt,
+            ],
             cwd=work,
             env=env,
         )

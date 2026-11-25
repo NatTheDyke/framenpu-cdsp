@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "framenpu-cdsp"
-version = "0.1.1"
+version = "0.1.2"
 description = "Steam Frame CDSP device backend for framenpu: Hexagon jobs and HMX inference"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["framenpu>=0.4,<0.5"]
+dependencies = ["framenpu>=0.4,<0.5", "numpy>=1.26"]
 license = "MIT"
 license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
 authors = [{name = "FrameNPU contributors"}]

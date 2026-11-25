@@ -19,7 +19,7 @@ from .errors import (
 from .job import Job, JobResult
 from .model import Clip, Dense, Model, ReLU
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 __all__ = [
     "Device",
