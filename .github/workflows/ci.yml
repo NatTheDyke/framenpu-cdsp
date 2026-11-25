@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 env:
-  FRAMENPU_REF: 839a986691283dcff2786f9aeff58267d747fd2c # framenpu 0.4.1
+  FRAMENPU_REF: 4f2a2b4077872f80b74b77e1c7fc07e779214f90 # framenpu 0.4.2
 
 jobs:
   host:
